@@ -1,0 +1,16 @@
+name: 'data-cards'
+description: 'GitHub Action data-cards'
+author: 'lxKylin'
+# 定义输入参数
+inputs:
+  params:
+    description: 'your params'
+    required: true
+
+outputs:
+  result:
+    description: 'data-cards'
+runs:
+  # 脚本运行环境
+  using: node16
+  main: 'dist/index.js'
