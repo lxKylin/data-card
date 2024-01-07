@@ -1,3 +1,5 @@
+const core = require('@actions/core');
+
 const getJuejinInfo = require('./crawler/juejin');
 const renderJuejinCard = require('./render/juejin');
 
@@ -6,4 +8,6 @@ async function renderJueJin(id) {
   renderJuejinCard(data, (lang = 'zh-CN'));
 }
 
-renderJueJin('4344859055106215');
+const params = core.getInput('params');
+
+renderJueJin(params);

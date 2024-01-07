@@ -3,7 +3,7 @@ const axios = require('axios');
 async function getJuejinInfo(user_id) {
   console.log('getJuejinInfo', user_id);
   let result = {
-    user_id: user_id,
+    user_id: String(user_id),
     user_name: '',
     description: '',
     follower_count: '', // 关注者
