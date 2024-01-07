@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node ./index.js"
+    "start": "node ./index.js",
+    "build": "ncc build index.js -o dist"
   },
   "repository": "https://github.com/lxKylin/juejin-card.git",
   "author": "Kylin <1159469891@qq.com>",
