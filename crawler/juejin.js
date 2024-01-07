@@ -1,6 +1,7 @@
 const axios = require('axios');
 
 async function getJuejinInfo(user_id) {
+  console.log('getJuejinInfo', user_id);
   let result = {
     user_id: user_id,
     user_name: '',
@@ -36,6 +37,7 @@ async function getJuejinInfo(user_id) {
         sort_type: 2
       }
     );
+    console.log(res2.data, 'json2');
     result.article_count = res2.data.count;
   } catch (e) {
     console.error(e);

@@ -3,6 +3,7 @@ const { formatNumber } = require('../utils/formatNumber');
 // const { isEndsWithASCII, encodeHTML } = require('../common/utils');
 
 function renderJuejinCard(data, lang) {
+  console.log(data, 'data');
   let {
     user_name,
     description, // 描述
@@ -13,11 +14,11 @@ function renderJuejinCard(data, lang) {
     level, // 创作等级
     theme
   } = data;
-  let lengthLimit = 14;
-  if (description.length > lengthLimit) {
-    description = description.substr(0, lengthLimit);
-    description += '...';
-  }
+  // let lengthLimit = 14;
+  // if (description.length > lengthLimit) {
+  //   description = description.substr(0, lengthLimit);
+  //   description += '...';
+  // }
   // description = encodeHTML(description);
   let items = [];
   switch (lang) {
@@ -38,7 +39,7 @@ function renderJuejinCard(data, lang) {
         constructItem(289, 84, `${formatNumber(got_digg_count)}`, 'value', 15),
         constructItem(289, 119, `${formatNumber(got_view_count)}`, 'value', 15),
         constructItem(126, 154, `${formatNumber(level)}`, 'value', 15),
-        constructItem(126, 189, `${description}`, 'value', 13)
+        constructItem(126, 189, `${description || '...'}`, 'value', 13)
       ];
       break;
     default:
