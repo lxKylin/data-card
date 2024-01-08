@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-node@v3 #安装node.js
         with:
           node-version: '18'
-      - name: Upload Card Image
+      - name: install & serve
         run: |
           echo "npm run serve"
           npm install
@@ -33,9 +33,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: juejin-card.svg
-          path: image
+          path: images
       - name: Download Card Image
         uses: actions/download-artifact@v2
         with:
           name: juejin-card.svg
-          path: image # 指定下载到本地的路径
+          path: images # 指定下载到本地的路径
+      # - name: Copy Card Image to Images Folder
+      #   run: |
+      #     # 在这里进行文件拷贝操作
+      #     cp path/to/local/directory/juejin-card-image.png images/
