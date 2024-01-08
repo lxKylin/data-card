@@ -33,10 +33,8 @@ jobs:
       - name: Copy Card Image to Images Folder
         run: |
           # 在这里进行文件拷贝操作
-          mv image/* $GITHUB_WORKSPACE/
+          mv image/* .
         shell: bash
-        env:
-          GITHUB_WORKSPACE: $GITHUB_WORKSPACE
       - name: Commit and Push Changes
         run: |
           echo "Commit and Push Changes"
@@ -46,6 +44,5 @@ jobs:
           git add .
           git commit -m "Add Card Image"
           git push
-        working-directory: $GITHUB_WORKSPACE
         env:
           GH_TOKEN: ${{ secrets.DATA_CARD_TOKEN }}
