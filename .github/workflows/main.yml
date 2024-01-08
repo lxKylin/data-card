@@ -44,5 +44,6 @@ jobs:
           git add .
           git commit -m "Add Card Image"
           git push
+        working-directory: $GITHUB_WORKSPACE
         env:
           GH_TOKEN: ${{ secrets.DATA_CARD_TOKEN }}
