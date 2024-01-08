@@ -48,12 +48,14 @@ jobs:
             echo "images文件夹已创建"
           else
             echo "images文件夹已存在"
+            rm /images/*
           fi
           mv image/*.svg ./images
         shell: bash
       - name: Commit and Push Changes
         run: |
           echo "Commit and Push Changes"
+          git remote -v
           # git remote add origin https://github.com/lxKylin/juejin-card.git # 一直存在
           echo "${GITHUB_ACTOR}, GITHUB_ACTOR"
           git config --global user.name "${GITHUB_ACTOR}"
@@ -61,7 +63,8 @@ jobs:
 
           git add .
           git commit -m "feat: Add Card Image"
-          # git push
-          git push https://$GITHUB_ACTOR:$PAT@github.com/lxKylin/juejin-card.git HEAD:main
+          # origin 是远程仓库的默认名称，而 HEAD:main 表示将本地的 HEAD 分支（通常是当前分支）推送到远程仓库的 main 分支
+          git push origin HEAD:main
+          # git push https://$GITHUB_ACTOR:$PAT@github.com/lxKylin/juejin-card.git HEAD:main
         env:
           GH_TOKEN: ${{ secrets.DATA_CARD_TOKEN }}
