@@ -38,12 +38,12 @@ jobs:
       - name: Commit and Push Changes
         run: |
           echo "Commit and Push Changes"
+          git remote add origin https://github.com/lxKylin/juejin-card.git
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
           git add .
           git commit -m "Add Card Image"
           git push
-        working-directory: $GITHUB_WORKSPACE
         env:
           GH_TOKEN: ${{ secrets.DATA_CARD_TOKEN }}
