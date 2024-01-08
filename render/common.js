@@ -41,6 +41,14 @@ function render(items, theme = 'default') {
 </svg>
 `;
 
+  const targetDirectory = path.resolve(__dirname, '../image');
+
+  // 检查目录是否存在，如果不存在则创建
+  if (!fs.existsSync(targetDirectory)) {
+    fs.mkdirSync(targetDirectory, { recursive: true });
+    console.log(`Directory '${targetDirectory}' has been created.`);
+  }
+
   fs.writeFile(
     path.resolve(__dirname, '../image/juejin-card.svg'),
     svgContent,
