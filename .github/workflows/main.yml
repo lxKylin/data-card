@@ -12,7 +12,7 @@ jobs:
       - name: Checkout code # 获取仓库代码
         uses: actions/checkout@v2
       - name: Setup Node.js
-        uses: actions/setup-node@v2 #安装node.js
+        uses: actions/setup-node@v3 #安装node.js
         with:
           node-version: '16'
       - name: Upload Card Image
@@ -20,19 +20,22 @@ jobs:
           echo "npm run serve"
           npm install
           npm run serve
-      - name: Commit and Push Changes
-        run: |
-          echo "Commit and Push Changes"
-          git config --global user.name "${GITHUB_ACTOR}"
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      # - name: Commit and Push Changes
+      #   run: |
+      #     echo "Commit and Push Changes"
+      #     git config --global user.name "${GITHUB_ACTOR}"
+      #     git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
-          git add .
-          git commit -m "Add generated file to specific folder"
-          git push
+      #     git add .
+      #     git commit -m "Add generated file to specific folder"
+      #     git push
       - name: Upload Card Image
         uses: actions/upload-artifact@v2
         with:
           name: juejin-card.svg
-          path: image/juejin-card.svg
-          run: |
-            echo "actions/upload-artifact@v2"
+          path: image
+      - name: Download Card Image
+        uses: actions/download-artifact@v2
+        with:
+          name: juejin-card.svg
+          path: image # 指定下载到本地的路径
