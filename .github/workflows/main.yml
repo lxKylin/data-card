@@ -9,6 +9,8 @@ jobs:
   Card_Image:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code # 获取仓库代码
+        uses: actions/checkout@v2
       - name: Setup Node.js
         uses: actions/setup-node@v2 #安装node.js
         with:
@@ -16,7 +18,6 @@ jobs:
       - name: Upload Card Image
         run: |
           echo "npm run serve"
-          cd /home/runner/work/juejin-card
           npm install
           npm run serve
       - name: Commit and Push Changes
