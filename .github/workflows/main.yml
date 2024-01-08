@@ -38,7 +38,8 @@ jobs:
       - name: Commit and Push Changes
         run: |
           echo "Commit and Push Changes"
-          git remote add origin https://github.com/lxKylin/juejin-card.git
+          # git remote add origin https://github.com/lxKylin/juejin-card.git # 一直存在
+          echo "${GITHUB_ACTOR}, GITHUB_ACTOR"
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
