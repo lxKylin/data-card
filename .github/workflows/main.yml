@@ -48,7 +48,6 @@ jobs:
             echo "images文件夹已创建"
           else
             echo "images文件夹已存在"
-            rm /images/*
           fi
           mv image/*.svg ./images
         shell: bash
