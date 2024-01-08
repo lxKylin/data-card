@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  get_data:
+  Card_Image:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Node.js
@@ -16,6 +16,7 @@ jobs:
       - name: Upload Card Image
         run: |
           echo "npm run serve"
+          npm install
           npm run serve
       - name: Commit and Push Changes
         run: |

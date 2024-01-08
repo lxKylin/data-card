@@ -38,7 +38,7 @@ function renderJuejinCard(data, lang) {
         constructItem(126, 119, `${formatNumber(article_count)}`, 'value', 15),
         constructItem(289, 84, `${formatNumber(got_digg_count)}`, 'value', 15),
         constructItem(289, 119, `${formatNumber(got_view_count)}`, 'value', 15),
-        constructItem(126, 154, `${formatNumber(level)}`, 'value', 15),
+        constructItem(126, 154, `Lv.${formatNumber(level)}`, 'value', 15),
         constructItem(126, 189, `${description || '...'}`, 'value', 13)
       ];
       break;
