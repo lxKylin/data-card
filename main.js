@@ -10,4 +10,4 @@ async function renderJueJin(id) {
 
 const params = core.getInput('params');
 
-renderJueJin(params);
+renderJueJin(params || '4344859055106215');
