@@ -35,6 +35,8 @@ jobs:
           # 在这里进行文件拷贝操作
           mv image/* $GITHUB_WORKSPACE/
         shell: bash
+        env:
+          GITHUB_WORKSPACE: $GITHUB_WORKSPACE
       - name: Commit and Push Changes
         run: |
           echo "Commit and Push Changes"
