@@ -61,6 +61,7 @@ jobs:
 
           git add .
           git commit -m "feat: Add Card Image"
-          git push
+          # git push
+          git push https://$GITHUB_ACTOR:$PAT@github.com/lxKylin/juejin-card.git HEAD:main
         env:
           GH_TOKEN: ${{ secrets.DATA_CARD_TOKEN }}
