@@ -20,15 +20,6 @@ jobs:
           echo "npm run serve"
           npm install
           npm run serve
-      # - name: Commit and Push Changes
-      #   run: |
-      #     echo "Commit and Push Changes"
-      #     git config --global user.name "${GITHUB_ACTOR}"
-      #     git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-
-      #     git add .
-      #     git commit -m "Add generated file to specific folder"
-      #     git push
       - name: Upload Card Image
         uses: actions/upload-artifact@v2
         with:
@@ -42,4 +33,17 @@ jobs:
       - name: Copy Card Image to Images Folder
         run: |
           # 在这里进行文件拷贝操作
-          cp image/juejin-card.svg image/
+          mv image/* $GITHUB_WORKSPACE/
+        shell: bash
+      - name: Commit and Push Changes
+        run: |
+          echo "Commit and Push Changes"
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+          git add .
+          git commit -m "Add Card Image"
+          git push
+        working-directory: $GITHUB_WORKSPACE
+        env:
+          GH_TOKEN: ${{ secrets.DATA_CARD_TOKEN }}
