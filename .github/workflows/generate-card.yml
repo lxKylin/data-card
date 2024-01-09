@@ -23,11 +23,11 @@ jobs:
           echo "npm run serve"
           npm install
           npm run serve
-          - name: Upload Card Image
-          uses: actions/upload-artifact@v2
-          with:
-            name: juejin-card.svg
-            path: image
+      - name: Upload Card Image
+        uses: actions/upload-artifact@v2
+        with:
+          name: juejin-card.svg
+          path: image
       - name: Download Card Image
         uses: actions/download-artifact@v2
         with:
