@@ -1,5 +1,5 @@
 {
-  "name": "juejin-card",
+  "name": "data-card",
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
@@ -7,7 +7,7 @@
     "serve": "node ./main.js",
     "build": "ncc build main.js -o dist"
   },
-  "repository": "https://github.com/lxKylin/juejin-card.git",
+  "repository": "https://github.com/lxKylin/data-card.git",
   "author": "Kylin <1159469891@qq.com>",
   "license": "MIT",
   "dependencies": {
