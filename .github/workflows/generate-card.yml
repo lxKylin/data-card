@@ -1,6 +1,9 @@
 name: Upload Card Image
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: '0 0 * * *' #每天0点执行
   workflow_dispatch:
@@ -21,6 +24,7 @@ jobs:
           npm install
           npm run serve
   Card_Image:
+    needs: Checkout
     runs-on: ubuntu-latest
     steps:
       - name: Create image folder
@@ -55,6 +59,7 @@ jobs:
           mv image/*.svg ./images
         shell: bash
   Commit_And_Push:
+    needs: Card_Image
     runs-on: ubuntu-latest
     steps:
       - name: Commit and Push Changes
