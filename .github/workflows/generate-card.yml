@@ -44,45 +44,6 @@ jobs:
           fi
           mv image/*.svg ./images
         shell: bash
-  # Card_Image:
-  #   needs: Checkout
-  #   runs-on: ubuntu-latest
-  #   steps:
-  # - name: Create image folder
-  #   run: |
-  #     # 检测是否存在image文件夹
-  #     echo "Create image folder"
-  #     if [ ! -d "image" ]; then
-  #       mkdir image
-  #       echo "image文件夹已创建"
-  #     else
-  #       echo "image文件夹已存在"
-  #     fi
-  # - name: Upload Card Image
-  #   uses: actions/upload-artifact@v2
-  #   with:
-  #     name: juejin-card.svg
-  #     path: image
-  # - name: Download Card Image
-  #   uses: actions/download-artifact@v2
-  #   with:
-  #     name: juejin-card.svg
-  #     path: image # 指定下载到本地的路径
-  # - name: Copy Card Image to Images Folder
-  #   run: |
-  #     # 在这里进行文件拷贝操作
-  #     if [ ! -d "images" ]; then
-  #       mkdir images
-  #       echo "images文件夹已创建"
-  #     else
-  #       echo "images文件夹已存在"
-  #     fi
-  #     mv image/*.svg ./images
-  #   shell: bash
-  Commit_And_Push:
-    needs: Card_Image
-    runs-on: ubuntu-latest
-    steps:
       - name: Commit and Push Changes
         run: |
           echo "Commit and Push Changes"
