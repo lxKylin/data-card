@@ -1,9 +1,9 @@
-const { render, constructItem } = require('./common');
-const { formatNumber } = require('../utils/formatNumber');
+const { render, constructItem } = require('./common')
+const { formatNumber } = require('../utils/formatNumber')
 // const { isEndsWithASCII, encodeHTML } = require('../common/utils');
 
-function renderJuejinCard(data, lang) {
-  console.log(data, 'data');
+function renderJueJinCard(data, lang = 'zh-CN') {
+  console.log(data, 'data')
   let {
     user_name,
     description, // 描述
@@ -13,14 +13,14 @@ function renderJuejinCard(data, lang) {
     got_view_count, // 文章被阅读
     level, // 创作等级
     theme
-  } = data;
+  } = data
   // let lengthLimit = 14;
   // if (description.length > lengthLimit) {
   //   description = description.substr(0, lengthLimit);
   //   description += '...';
   // }
   // description = encodeHTML(description);
-  let items = [];
+  let items = []
   switch (lang) {
     case 'zh-CN':
       // if (isEndsWithASCII(user_name)) {
@@ -40,8 +40,8 @@ function renderJuejinCard(data, lang) {
         constructItem(289, 119, `${formatNumber(got_view_count)}`, 'value', 15),
         constructItem(126, 154, `Lv.${formatNumber(level)}`, 'value', 15),
         constructItem(126, 189, `${description || '...'}`, 'value', 13)
-      ];
-      break;
+      ]
+      break
     default:
       items = [
         constructItem(94, 44, `${user_name}&apos;s Juejin Stats`, 'title', 18),
@@ -50,15 +50,16 @@ function renderJuejinCard(data, lang) {
         constructItem(55, 119, `Articles`, 'label', 13.5),
         constructItem(203, 119, `Article Views`, 'label', 13.5),
         constructItem(55, 154, `Signature`, 'label', 13.5),
-        constructItem(126, 84, `${follower_count}`, 'value', 15),
-        constructItem(126, 119, `${article_count}`, 'value', 15),
-        constructItem(289, 84, `${got_digg_count}`, 'value', 15),
-        constructItem(289, 119, `${got_view_count}`, 'value', 15),
-        constructItem(126, 154, `${description}`, 'value', 13)
-      ];
-      break;
+        constructItem(126, 84, `${formatNumber(follower_count)}`, 'value', 15),
+        constructItem(126, 119, `${formatNumber(article_count)}`, 'value', 15),
+        constructItem(289, 84, `${formatNumber(got_digg_count)}`, 'value', 15),
+        constructItem(289, 119, `${formatNumber(got_view_count)}`, 'value', 15),
+        constructItem(126, 154, `Lv.${formatNumber(level)}`, 'value', 15),
+        constructItem(126, 189, `${description || '...'}`, 'value', 13)
+      ]
+      break
   }
-  return render(items, theme);
+  return render(items, theme)
 }
 
-module.exports = renderJuejinCard;
+module.exports = renderJueJinCard

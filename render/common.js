@@ -1,27 +1,27 @@
-const getTheme = require('../common/theme.js');
-const fs = require('fs');
-const path = require('path');
+const getTheme = require('../common/theme.js')
+const fs = require('fs')
+const path = require('path')
 
 function render(items, theme = 'default') {
   const { titleColor, backgroundColor, labelColor, valueColor } =
-    getTheme(theme);
-  let textTags = '';
+    getTheme(theme)
+  let textTags = ''
   for (let i = 0; i < items.length; i++) {
-    items[i].id = `key_${i}`;
+    items[i].id = `key_${i}`
     if (!items[i].color) {
       switch (items[i].type) {
         case 'title':
-          items[i].color = titleColor;
-          break;
+          items[i].color = titleColor
+          break
         case 'label':
-          items[i].color = labelColor;
-          break;
+          items[i].color = labelColor
+          break
         case 'value':
-          items[i].color = valueColor;
-          break;
+          items[i].color = valueColor
+          break
       }
     }
-    textTags += renderText(items[i]);
+    textTags += renderText(items[i])
   }
 
   const svgContent = `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='382' height='228' viewBox='0 0 382 228'>
@@ -39,35 +39,35 @@ function render(items, theme = 'default') {
   </g>
   ${textTags}
 </svg>
-`;
+`
 
-  const targetDirectory = path.resolve(__dirname, '../image');
+  const targetDirectory = path.resolve(__dirname, '../image')
 
   // 检查目录是否存在，如果不存在则创建
   if (!fs.existsSync(targetDirectory)) {
-    fs.mkdirSync(targetDirectory, { recursive: true });
-    console.log(`Directory '${targetDirectory}' has been created.`);
+    fs.mkdirSync(targetDirectory, { recursive: true })
+    console.log(`Directory '${targetDirectory}' has been created.`)
   }
 
   fs.writeFile(
     path.resolve(__dirname, '../image/juejin-card.svg'),
     svgContent,
     (err) => {
-      if (err) throw err;
-      console.log('SVG file has been created!');
+      if (err) throw err
+      console.log('SVG file has been created!')
     }
-  );
+  )
 
-  return svgContent;
+  return svgContent
 }
 
 function renderText(data) {
-  let weight = '';
+  let weight = ''
   if (data.type === 'title') {
-    weight = ` font-weight="700" `;
-    return `<text id='${data.id}' x='50%' y='${data.translate_y}' dominant-baseline='middle' text-anchor='middle' fill='${data.color}' font-size='${data.font_size}' font-family='${data.font}' ${weight}>${data.text}</text>`;
+    weight = ` font-weight="700" `
+    return `<text id='${data.id}' x='50%' y='${data.translate_y}' dominant-baseline='middle' text-anchor='middle' fill='${data.color}' font-size='${data.font_size}' font-family='${data.font}' ${weight}>${data.text}</text>`
   }
-  return `<text id='${data.id}' transform='translate(${data.translate_x} ${data.translate_y})' fill='${data.color}' font-size='${data.font_size}' font-family='${data.font}' ${weight}><tspan x='0' y='0'>${data.text}</tspan></text>\n`;
+  return `<text id='${data.id}' transform='translate(${data.translate_x} ${data.translate_y})' fill='${data.color}' font-size='${data.font_size}' font-family='${data.font}' ${weight}><tspan x='0' y='0'>${data.text}</tspan></text>\n`
 }
 
 function constructItem(
@@ -87,8 +87,8 @@ function constructItem(
     font_size: font_size,
     color: color,
     font: font
-  };
+  }
 }
 
-exports.render = render;
-exports.constructItem = constructItem;
+exports.render = render
+exports.constructItem = constructItem

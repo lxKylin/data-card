@@ -2,11 +2,11 @@ name: Upload Card Image
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *' #每天0点执行
   workflow_dispatch:
 
 jobs:
-  Card_Image:
+  Checkout:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code # 获取仓库代码
@@ -20,6 +20,9 @@ jobs:
           echo "npm run serve"
           npm install
           npm run serve
+  Card_Image:
+    runs-on: ubuntu-latest
+    steps:
       - name: Create image folder
         run: |
           # 检测是否存在image文件夹
@@ -51,6 +54,9 @@ jobs:
           fi
           mv image/*.svg ./images
         shell: bash
+  Commit_And_Push:
+    runs-on: ubuntu-latest
+    steps:
       - name: Commit and Push Changes
         run: |
           echo "Commit and Push Changes"

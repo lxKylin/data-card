@@ -1,7 +1,7 @@
-const axios = require('axios');
+const axios = require('axios')
 
-async function getJuejinInfo(user_id) {
-  console.log('getJuejinInfo', user_id);
+async function getJueJinInfo(user_id) {
+  console.log('getJuejinInfo', user_id)
   let result = {
     user_id: String(user_id),
     user_name: '',
@@ -10,23 +10,23 @@ async function getJuejinInfo(user_id) {
     got_digg_count: '', // 获得点赞
     article_count: '', // 文章数量
     got_view_count: '' // 文章被阅读
-  };
+  }
 
   try {
     let res = await axios.get(
       `https://api.juejin.cn/user_api/v1/user/get?user_id=${user_id}`
-    );
+    )
 
-    console.log(res.data, 'json');
+    console.log(res.data, 'json')
 
-    let data = res.data.data;
-    result.user_id = data.user_id;
-    result.user_name = data.user_name;
-    result.description = data.description;
-    result.follower_count = data.follower_count;
-    result.got_digg_count = data.got_digg_count;
-    result.got_view_count = data.got_view_count;
-    result.level = data.level;
+    let data = res.data.data
+    result.user_id = data.user_id
+    result.user_name = data.user_name
+    result.description = data.description
+    result.follower_count = data.follower_count
+    result.got_digg_count = data.got_digg_count
+    result.got_view_count = data.got_view_count
+    result.level = data.level
 
     // 获取文章数量
     let res2 = await axios.post(
@@ -36,14 +36,14 @@ async function getJuejinInfo(user_id) {
         cursor: '0',
         sort_type: 2
       }
-    );
-    console.log(res2.data, 'json2');
-    result.article_count = res2.data.count;
+    )
+    console.log(res2.data, 'json2')
+    result.article_count = res2.data.count
   } catch (e) {
-    console.error(e);
+    console.error(e)
   }
 
-  return result;
+  return result
 }
 
-module.exports = getJuejinInfo;
+module.exports = getJueJinInfo

@@ -3,14 +3,20 @@ description: 'GitHub Action data-cards'
 author: 'lxKylin'
 # 定义输入参数
 inputs:
-  params:
-    description: 'your params'
+  JueJinId:
+    description: 'your JueJinId'
     required: true
+  # csdnId:
+  #   description: 'your csdnId'
+  #   required: true
+  # LeetCodeId:
+  #   description: 'your LeetCodeId'
+  #   required: true
 
 outputs:
   result:
     description: 'data-cards'
 runs:
   # 脚本运行环境
-  using: node16
+  using: node18
   main: 'dist/index.js'

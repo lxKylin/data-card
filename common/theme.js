@@ -1,8 +1,8 @@
 function getTheme(theme) {
   if (theme in themes) {
-    return themes[theme];
+    return themes[theme]
   } else {
-    return themes['default'];
+    return themes['default']
   }
 }
 
@@ -267,6 +267,6 @@ let themes = {
     valueColor: '#27e8a7',
     backgroundColor: '#242938'
   }
-};
+}
 
-module.exports = getTheme;
+module.exports = getTheme
