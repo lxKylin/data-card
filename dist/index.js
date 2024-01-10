@@ -8,6 +8,14 @@ const axios = __nccwpck_require__(8757)
 const fs = __nccwpck_require__(7147)
 const log = __nccwpck_require__(7454)
 
+const getJueJinInfo = __nccwpck_require__(9178)
+const renderJueJinCard = __nccwpck_require__(3060)
+
+async function renderJueJin(id) {
+  const data = await getJueJinInfo(id)
+  renderJueJinCard(data)
+}
+
 const Action = async (payload) => {
   const { token, JueJinId, commit_message, branch, owner, repo } = payload
 
@@ -23,21 +31,424 @@ const Action = async (payload) => {
   })
 
   try {
+    // 1. 获取特定分支的最后一次提交 SHA
+    console.log('1. 获取特定分支的最后一次提交 SHA')
     const branchResponse = await instance.get(`/branches/${branch}`)
     console.log(branchResponse, 'branchResponse1')
-    console.log(JSON.stringify(branchResponse), 'branchResponse2')
     console.log(branchResponse.data, 'branchResponse.data')
+    console.log(branchResponse.data.commit, 'branchResponse.data.commit')
     const lastCommitSHA = branchResponse.data.commit.sha
     console.log(lastCommitSHA, 'lastCommitSHA')
-    const commitsResponse = await instance.get(`/commits`)
-    console.log(commitsResponse, 'commitsResponse1')
-    console.log(JSON.stringify(commitsResponse), 'commitsResponse2')
+
+    renderJueJin(JueJinId)
+    try {
+      // 同步读取文件内容
+      const jueJinSvg = fs.readFileSync('./images/juejin-card.svg', 'utf8')
+      console.log('同步读取文件内容:', jueJinSvg)
+    } catch (err) {
+      console.error('读取文件时发生错误:', err)
+    }
+    // 2. 创建 Blobs（base64 编码）
+    console.log('2. 创建 Blobs（base64 编码）')
+    const createBlob = async (content, encoding) => {
+      const blobResponse = await Axios.post('/git/blobs', {
+        content: content,
+        encoding: encoding
+      })
+      return blobResponse.data.sha
+    }
+    const jueJinSvgSHA = await createBlob(
+      jueJinSvg.toString('base64'),
+      'base64'
+    )
+    console.log('jueJinSvgSHA', jueJinSvgSHA)
+    // 3. 创建一个定义了文件夹结构的树
+    console.log('3. 创建一个定义了文件夹结构的树')
+    const createTree = async (baseTreeSHA, blobs) => {
+      const tree = blobs.map((blob) => {
+        return {
+          path: blob.path,
+          mode: '100644',
+          type: 'blob',
+          sha: blob.sha
+        }
+      })
+
+      const treeResponse = await Axios.post('/git/trees', {
+        base_tree: baseTreeSHA,
+        tree: tree
+      })
+      return treeResponse.data.sha
+    }
+
+    const treeSHA = await createTree(lastCommitSHA, [
+      { path: 'test/juejin.svg', sha: jueJinSvgSHA }
+    ])
+    console.log('treeSHA', treeSHA)
+
+    // 4. 创建提交
+    console.log('4. 创建提交')
+    const createCommit = async (treeSHA) => {
+      const commitResponse = await Axios.post('/git/commits', {
+        message: commit_message,
+        author: {
+          name: owner,
+          email: `${owner}@users.noreply.github.com`
+        },
+        parents: [lastCommitSHA],
+        tree: treeSHA
+      })
+      return commitResponse.data.sha
+    }
+
+    const newCommitSHA = await createCommit(treeSHA)
+
+    // 5. 更新分支引用
+    console.log('5. 更新分支引用')
+    await Axios.patch(`/git/refs/heads/${branch}`, {
+      sha: newCommitSHA
+    })
   } catch (error) {
     console.log('error', error)
   }
 }
 
 module.exports = Action
+
+
+/***/ }),
+
+/***/ 3732:
+/***/ ((module) => {
+
+function getTheme(theme) {
+  if (theme in themes) {
+    return themes[theme]
+  } else {
+    return themes['default']
+  }
+}
+
+let themes = {
+  default: {
+    titleColor: '#2f80ed',
+    icon_color: '#4c71f2',
+    valueColor: '#434d58',
+    backgroundColor: '#fffefe',
+    border_color: '#e4e2e2'
+  },
+  light: {
+    titleColor: '#212121',
+    backgroundColor: '#ffffff',
+    labelColor: '#9e9e9e',
+    valueColor: '#212121'
+  },
+  dark: {
+    // this is for compatibility
+    titleColor: '#FD428D',
+    labelColor: '#A8FDF6',
+    valueColor: '#A8FDF6',
+    backgroundColor: '#141321'
+  },
+  dark2: {
+    titleColor: '#ffffff',
+    labelColor: '#79ff97',
+    valueColor: '#9f9f9f',
+    backgroundColor: '#151515'
+  },
+  radical: {
+    titleColor: '#fe428e',
+    labelColor: '#f8d847',
+    valueColor: '#a9fef7',
+    backgroundColor: '#141321'
+  },
+  merko: {
+    titleColor: '#abd200',
+    labelColor: '#b7d364',
+    valueColor: '#68b587',
+    backgroundColor: '#0a0f0b'
+  },
+  gruvbox: {
+    titleColor: '#fabd2f',
+    labelColor: '#fe8019',
+    valueColor: '#8ec07c',
+    backgroundColor: '#282828'
+  },
+  gruvbox_light: {
+    titleColor: '#b57614',
+    labelColor: '#af3a03',
+    valueColor: '#427b58',
+    backgroundColor: '#fbf1c7'
+  },
+  tokyonight: {
+    titleColor: '#70a5fd',
+    labelColor: '#bf91f3',
+    valueColor: '#38bdae',
+    backgroundColor: '#1a1b27'
+  },
+  onedark: {
+    titleColor: '#e4bf7a',
+    labelColor: '#8eb573',
+    valueColor: '#df6d74',
+    backgroundColor: '#282c34'
+  },
+  cobalt: {
+    titleColor: '#e683d9',
+    labelColor: '#0480ef',
+    valueColor: '#75eeb2',
+    backgroundColor: '#193549'
+  },
+  synthwave: {
+    titleColor: '#e2e9ec',
+    labelColor: '#ef8539',
+    valueColor: '#e5289e',
+    backgroundColor: '#2b213a'
+  },
+  highcontrast: {
+    titleColor: '#e7f216',
+    labelColor: '#00ffff',
+    valueColor: '#fff',
+    backgroundColor: '#000'
+  },
+  dracula: {
+    titleColor: '#ff6e96',
+    labelColor: '#79dafa',
+    valueColor: '#f8f8f2',
+    backgroundColor: '#282a36'
+  },
+  prussian: {
+    titleColor: '#bddfff',
+    labelColor: '#38a0ff',
+    valueColor: '#6e93b5',
+    backgroundColor: '#172f45'
+  },
+  monokai: {
+    titleColor: '#eb1f6a',
+    labelColor: '#e28905',
+    valueColor: '#f1f1eb',
+    backgroundColor: '#272822'
+  },
+  vue: {
+    titleColor: '#41b883',
+    labelColor: '#41b883',
+    valueColor: '#273849',
+    backgroundColor: '#fffefe'
+  },
+  'vue-dark': {
+    titleColor: '#41b883',
+    labelColor: '#41b883',
+    valueColor: '#fffefe',
+    backgroundColor: '#273849'
+  },
+  'shades-of-purple': {
+    titleColor: '#fad000',
+    labelColor: '#b362ff',
+    valueColor: '#a599e9',
+    backgroundColor: '#2d2b55'
+  },
+  nightowl: {
+    titleColor: '#c792ea',
+    labelColor: '#ffeb95',
+    valueColor: '#7fdbca',
+    backgroundColor: '#011627'
+  },
+  buefy: {
+    titleColor: '#7957d5',
+    labelColor: '#ff3860',
+    valueColor: '#363636',
+    backgroundColor: '#ffffff'
+  },
+  'blue-green': {
+    titleColor: '#2f97c1',
+    labelColor: '#f5b700',
+    valueColor: '#0cf574',
+    backgroundColor: '#040f0f'
+  },
+  algolia: {
+    titleColor: '#00AEFF',
+    labelColor: '#2DDE98',
+    valueColor: '#FFFFFF',
+    backgroundColor: '#050F2C'
+  },
+  'great-gatsby': {
+    titleColor: '#ffa726',
+    labelColor: '#ffb74d',
+    valueColor: '#ffd95b',
+    backgroundColor: '#000000'
+  },
+  darcula: {
+    titleColor: '#BA5F17',
+    labelColor: '#84628F',
+    valueColor: '#BEBEBE',
+    backgroundColor: '#242424'
+  },
+  bear: {
+    titleColor: '#e03c8a',
+    labelColor: '#00AEFF',
+    valueColor: '#bcb28d',
+    backgroundColor: '#1f2023'
+  },
+  'solarized-dark': {
+    titleColor: '#268bd2',
+    labelColor: '#b58900',
+    valueColor: '#859900',
+    backgroundColor: '#002b36'
+  },
+  'solarized-light': {
+    titleColor: '#268bd2',
+    labelColor: '#b58900',
+    valueColor: '#859900',
+    backgroundColor: '#fdf6e3'
+  },
+  'chartreuse-dark': {
+    titleColor: '#7fff00',
+    labelColor: '#00AEFF',
+    valueColor: '#fff',
+    backgroundColor: '#000'
+  },
+  nord: {
+    titleColor: '#81a1c1',
+    valueColor: '#d8dee9',
+    labelColor: '#88c0d0',
+    backgroundColor: '#2e3440'
+  },
+  gotham: {
+    titleColor: '#2aa889',
+    labelColor: '#599cab',
+    valueColor: '#99d1ce',
+    backgroundColor: '#0c1014'
+  },
+  'material-palenight': {
+    titleColor: '#c792ea',
+    labelColor: '#89ddff',
+    valueColor: '#a6accd',
+    backgroundColor: '#292d3e'
+  },
+  graywhite: {
+    titleColor: '#24292e',
+    labelColor: '#24292e',
+    valueColor: '#24292e',
+    backgroundColor: '#ffffff'
+  },
+  'vision-friendly-dark': {
+    titleColor: '#ffb000',
+    labelColor: '#785ef0',
+    valueColor: '#ffffff',
+    backgroundColor: '#000000'
+  },
+  'ayu-mirage': {
+    titleColor: '#f4cd7c',
+    labelColor: '#73d0ff',
+    valueColor: '#c7c8c2',
+    backgroundColor: '#1f2430'
+  },
+  'midnight-purple': {
+    titleColor: '#9745f5',
+    labelColor: '#9f4bff',
+    valueColor: '#ffffff',
+    backgroundColor: '#000000'
+  },
+  calm: {
+    titleColor: '#e07a5f',
+    labelColor: '#edae49',
+    valueColor: '#ebcfb2',
+    backgroundColor: '#373f51'
+  },
+  'flag-india': {
+    titleColor: '#ff8f1c',
+    labelColor: '#250E62',
+    valueColor: '#509E2F',
+    backgroundColor: '#ffffff'
+  },
+  omni: {
+    titleColor: '#FF79C6',
+    labelColor: '#e7de79',
+    valueColor: '#E1E1E6',
+    backgroundColor: '#191622'
+  },
+  react: {
+    titleColor: '#61dafb',
+    labelColor: '#61dafb',
+    valueColor: '#ffffff',
+    backgroundColor: '#20232a'
+  },
+  maroongold: {
+    titleColor: '#F7EF8A',
+    labelColor: '#F7EF8A',
+    valueColor: '#E0AA3E',
+    backgroundColor: '#260000'
+  },
+  yeblu: {
+    titleColor: '#ffff00',
+    labelColor: '#ffff00',
+    valueColor: '#ffffff',
+    backgroundColor: '#002046'
+  },
+  blueberry: {
+    titleColor: '#82aaff',
+    labelColor: '#89ddff',
+    valueColor: '#27e8a7',
+    backgroundColor: '#242938'
+  }
+}
+
+module.exports = getTheme
+
+
+/***/ }),
+
+/***/ 9178:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const axios = __nccwpck_require__(8757)
+
+async function getJueJinInfo(user_id) {
+  console.log('getJuejinInfo', user_id)
+  let result = {
+    user_id: String(user_id),
+    user_name: '',
+    description: '',
+    follower_count: '', // 关注者
+    got_digg_count: '', // 获得点赞
+    article_count: '', // 文章数量
+    got_view_count: '' // 文章被阅读
+  }
+
+  try {
+    let res = await axios.get(
+      `https://api.juejin.cn/user_api/v1/user/get?user_id=${user_id}`
+    )
+
+    console.log(res.data, 'json')
+
+    let data = res.data.data
+    result.user_id = data.user_id
+    result.user_name = data.user_name
+    result.description = data.description
+    result.follower_count = data.follower_count
+    result.got_digg_count = data.got_digg_count
+    result.got_view_count = data.got_view_count
+    result.level = data.level
+
+    // 获取文章数量
+    let res2 = await axios.post(
+      'https://api.juejin.cn/content_api/v1/article/query_list',
+      {
+        user_id: user_id,
+        cursor: '0',
+        sort_type: 2
+      }
+    )
+    console.log(res2.data, 'json2')
+    result.article_count = res2.data.count
+  } catch (e) {
+    console.error(e)
+  }
+
+  return result
+}
+
+module.exports = getJueJinInfo
 
 
 /***/ }),
@@ -32115,6 +32526,191 @@ function wrappy (fn, cb) {
     return ret
   }
 }
+
+
+/***/ }),
+
+/***/ 2363:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+const getTheme = __nccwpck_require__(3732)
+const fs = __nccwpck_require__(7147)
+const path = __nccwpck_require__(1017)
+
+function render(items, theme = 'default') {
+  const { titleColor, backgroundColor, labelColor, valueColor } =
+    getTheme(theme)
+  let textTags = ''
+  for (let i = 0; i < items.length; i++) {
+    items[i].id = `key_${i}`
+    if (!items[i].color) {
+      switch (items[i].type) {
+        case 'title':
+          items[i].color = titleColor
+          break
+        case 'label':
+          items[i].color = labelColor
+          break
+        case 'value':
+          items[i].color = valueColor
+          break
+      }
+    }
+    textTags += renderText(items[i])
+  }
+
+  const svgContent = `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='382' height='228' viewBox='0 0 382 228'>
+  <defs>
+    <filter id='Card' x='0' y='0' width='382' height='228' filterUnits='userSpaceOnUse'>
+      <feOffset dy='3' input='SourceAlpha'/>
+      <feGaussianBlur stdDeviation='3' result='blur'/>
+      <feFlood flood-opacity='0.161'/>
+      <feComposite operator='in' in2='blur'/>
+      <feComposite in='SourceGraphic'/>
+    </filter>
+  </defs>
+  <g transform='matrix(1, 0, 0, 1, 0, 0)' filter='url(#Card)'>
+    <rect id='Card-2' data-name='Card' width='364' height='210' rx='8' transform='translate(9 6)' fill='${backgroundColor}'/>
+  </g>
+  ${textTags}
+</svg>
+`
+
+  const targetDirectory = path.resolve(__dirname, '../image')
+
+  // 检查目录是否存在，如果不存在则创建
+  if (!fs.existsSync(targetDirectory)) {
+    fs.mkdirSync(targetDirectory, { recursive: true })
+    console.log(`Directory '${targetDirectory}' has been created.`)
+  }
+
+  fs.writeFile(
+    path.resolve(__dirname, '../image/juejin-card.svg'),
+    svgContent,
+    (err) => {
+      if (err) throw err
+      console.log('SVG file has been created!')
+    }
+  )
+
+  return svgContent
+}
+
+function renderText(data) {
+  let weight = ''
+  if (data.type === 'title') {
+    weight = ` font-weight="700" `
+    return `<text id='${data.id}' x='50%' y='${data.translate_y}' dominant-baseline='middle' text-anchor='middle' fill='${data.color}' font-size='${data.font_size}' font-family='${data.font}' ${weight}>${data.text}</text>`
+  }
+  return `<text id='${data.id}' transform='translate(${data.translate_x} ${data.translate_y})' fill='${data.color}' font-size='${data.font_size}' font-family='${data.font}' ${weight}><tspan x='0' y='0'>${data.text}</tspan></text>\n`
+}
+
+function constructItem(
+  translate_x,
+  translate_y,
+  text,
+  type,
+  font_size,
+  color = '',
+  font = 'SegoeUI, Segoe UI, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Microsoft YaHei'
+) {
+  return {
+    translate_x: translate_x,
+    translate_y: translate_y,
+    text: text,
+    type: type,
+    font_size: font_size,
+    color: color,
+    font: font
+  }
+}
+
+exports.render = render
+exports.constructItem = constructItem
+
+
+/***/ }),
+
+/***/ 3060:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+const { render, constructItem } = __nccwpck_require__(2363)
+const { formatNumber } = __nccwpck_require__(7795)
+// const { isEndsWithASCII, encodeHTML } = require('../common/utils');
+
+function renderJueJinCard(data, lang = 'zh-CN') {
+  console.log(data, 'data')
+  let {
+    user_name,
+    description, // 描述
+    follower_count, // 关注者
+    got_digg_count, // 获得点赞
+    article_count, // 文章数
+    got_view_count, // 文章被阅读
+    level, // 创作等级
+    theme
+  } = data
+  // let lengthLimit = 14;
+  // if (description.length > lengthLimit) {
+  //   description = description.substr(0, lengthLimit);
+  //   description += '...';
+  // }
+  // description = encodeHTML(description);
+  let items = []
+  switch (lang) {
+    case 'zh-CN':
+      // if (isEndsWithASCII(user_name)) {
+      //   user_name += ' ';
+      // }
+      items = [
+        constructItem(94, 44, `${user_name}的掘金数据`, 'title', 18),
+        constructItem(55, 84, `关注者`, 'label', 13.5),
+        constructItem(203, 84, `文章被点赞数`, 'label', 13.5),
+        constructItem(55, 119, `创作文章数`, 'label', 13.5),
+        constructItem(203, 119, `文章被阅读数`, 'label', 13.5),
+        constructItem(55, 154, `创作等级`, 'label', 13.5),
+        constructItem(55, 189, `签名`, 'label', 13.5),
+        constructItem(126, 84, `${formatNumber(follower_count)}`, 'value', 15),
+        constructItem(126, 119, `${formatNumber(article_count)}`, 'value', 15),
+        constructItem(289, 84, `${formatNumber(got_digg_count)}`, 'value', 15),
+        constructItem(289, 119, `${formatNumber(got_view_count)}`, 'value', 15),
+        constructItem(126, 154, `Lv.${formatNumber(level)}`, 'value', 15),
+        constructItem(126, 189, `${description || '...'}`, 'value', 13)
+      ]
+      break
+    default:
+      items = [
+        constructItem(94, 44, `${user_name}&apos;s Juejin Stats`, 'title', 18),
+        constructItem(55, 84, `Followers`, 'label', 13.5),
+        constructItem(203, 84, `Likes`, 'label', 13.5),
+        constructItem(55, 119, `Articles`, 'label', 13.5),
+        constructItem(203, 119, `Article Views`, 'label', 13.5),
+        constructItem(55, 154, `Signature`, 'label', 13.5),
+        constructItem(126, 84, `${formatNumber(follower_count)}`, 'value', 15),
+        constructItem(126, 119, `${formatNumber(article_count)}`, 'value', 15),
+        constructItem(289, 84, `${formatNumber(got_digg_count)}`, 'value', 15),
+        constructItem(289, 119, `${formatNumber(got_view_count)}`, 'value', 15),
+        constructItem(126, 154, `Lv.${formatNumber(level)}`, 'value', 15),
+        constructItem(126, 189, `${description || '...'}`, 'value', 13)
+      ]
+      break
+  }
+  return render(items, theme)
+}
+
+module.exports = renderJueJinCard
+
+
+/***/ }),
+
+/***/ 7795:
+/***/ ((__unused_webpack_module, exports) => {
+
+function formatNumber(num) {
+  return num.toLocaleString(); // 使用本地化的方法进行格式化
+}
+
+exports.formatNumber = formatNumber;
 
 
 /***/ }),
