@@ -58,7 +58,8 @@ const Action = async (payload) => {
         return {
           path: blob.path,
           mode: '100644',
-          type: 'blob',
+          type: 'image/svg+xml',
+          // type: 'blob',
           sha: blob.sha
         }
       })
