@@ -46,7 +46,7 @@ const Action = async (payload) => {
     }
 
     fs.writeFile(
-      path.resolve(__dirname, '../image/juejin-card.svg'),
+      path.resolve(__dirname, `${targetDirectory}/juejin-card.svg`),
       svgContent,
       (err) => {
         if (err) {
@@ -57,7 +57,7 @@ const Action = async (payload) => {
       }
     )
 
-    const imageContent = fs.readFileSync('../image/juejin-card.svg')
+    const imageContent = fs.readFileSync(`${targetDirectory}/juejin-card.svg`)
 
     console.log(imageContent, 'imageContent同步读取文件内容')
 
