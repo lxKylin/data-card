@@ -15,6 +15,7 @@ const Action = require('./actions')
     log.info(`branch: ${branch}`)
     log.info(`github: ${github}`)
     const { context } = github.context
+    log.info(`context: ${JSON.stringify(context)}`)
     const owner = context.repo.owner
     const repo = context.repo.repo
     log.info(`owner: ${owner}`)
