@@ -7,11 +7,30 @@
 const axios = __nccwpck_require__(8757)
 const fs = __nccwpck_require__(7147)
 const log = __nccwpck_require__(7454)
+const { Octokit } = __nccwpck_require__(6762)
+
+const octokit = new Octokit({
+  auth: token
+})
+console.log('octokit', octokit)
+
+async function b() {
+  const a = await octokit.request(`GET /repos/${owner}/${repo}/commits`, {
+    owner,
+    repo,
+    headers: {
+      'X-GitHub-Api-Version': '2022-11-28'
+    }
+  })
+  console.log('a', a)
+}
+
+b()
 
 const Action = async (payload) => {
   const { token, JueJinId, commit_message, branch, owner, repo } = payload
 
-  log.info(`payload: ${payload}`)
+  log.info(`payload: ${JSON.stringify(payload)}`)
 
   // 创建一个 axios 实例，包含共享的请求配置
   const Axios = axios.create({
@@ -22,8 +41,13 @@ const Action = async (payload) => {
     }
   })
 
-  const branchResponse = await Axios.get(`/branches/${branch}`)
-  log.info(branchResponse, 'branchResponse')
+  try {
+    const branchResponse = await Axios.get(`/branches/${branch}`)
+    log.info(branchResponse, 'branchResponse1')
+    log.info(JSON.stringify(branchResponse), 'branchResponse2')
+  } catch (error) {
+    console.log('error', error)
+  }
 }
 
 module.exports = Action
@@ -38401,13 +38425,10 @@ const Action = __nccwpck_require__(4582)
     log.info(`commit_message: ${commit_message}`)
     log.info(`branch: ${branch}`)
     console.log('github1', github)
-    log.info(`github2: ${github}`)
-    log.info(`github3: ${JSON.stringify(github)}`)
+    log.info(`github: ${JSON.stringify(github)}`)
     // const { context } = github.context
     const context = github.context
-    console.log(`context11: ${context}`)
-    log.info(`context22: ${context}`)
-    log.info(`context33: ${JSON.stringify(context)}`)
+    log.info(`context: ${JSON.stringify(context)}`)
     const owner = context.repo.owner
     const repo = context.repo.repo
     log.info(`owner: ${owner}`)
