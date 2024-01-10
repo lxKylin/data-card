@@ -21,8 +21,9 @@ const Action = async (payload) => {
     baseURL: `https://api.github.com/repos/${owner}/${repo}`,
     headers: {
       Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      Accept: 'application/vnd.github+json'
+      // 'Content-Type': 'application/json',
+      Accept: 'application/vnd.github+json',
+      'x-github-api-version': '2022-11-28'
     }
   })
 
@@ -36,7 +37,7 @@ const Action = async (payload) => {
     const lastCommitSHA = branchResponse.data.commit.sha
     console.log(lastCommitSHA, 'lastCommitSHA')
 
-    const svgContent = await renderJueJin(JueJinId)
+    // const svgContent = await renderJueJin(JueJinId)
 
     // const targetDirectory = path.resolve(__dirname, '../image')
 
