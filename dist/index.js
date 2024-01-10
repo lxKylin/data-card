@@ -4,7 +4,7 @@
 /***/ 4582:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-const axios = __nccwpck_require__(8757)
+const instance = __nccwpck_require__(9041)
 const fs = __nccwpck_require__(7147)
 const log = __nccwpck_require__(7454)
 
@@ -21,8 +21,8 @@ const Action = async (payload) => {
 
   log.info(`payload: ${JSON.stringify(payload)}`)
 
-  // 创建一个 axios 实例，包含共享的请求配置
-  const instance = axios.create({
+  // 创建一个 instance 实例，包含共享的请求配置
+  const instance = instance.create({
     baseURL: `https://api.github.com/repos/${owner}/${repo}`,
     headers: {
       Authorization: `Bearer ${token}`,
@@ -52,7 +52,7 @@ const Action = async (payload) => {
     // 2. 创建 Blobs（base64 编码）
     console.log('2. 创建 Blobs（base64 编码）')
     const createBlob = async (content, encoding) => {
-      const blobResponse = await Axios.post('/git/blobs', {
+      const blobResponse = await instance.post('/git/blobs', {
         content: content,
         encoding: encoding
       })
@@ -75,7 +75,7 @@ const Action = async (payload) => {
         }
       })
 
-      const treeResponse = await Axios.post('/git/trees', {
+      const treeResponse = await instance.post('/git/trees', {
         base_tree: baseTreeSHA,
         tree: tree
       })
@@ -90,7 +90,7 @@ const Action = async (payload) => {
     // 4. 创建提交
     console.log('4. 创建提交')
     const createCommit = async (treeSHA) => {
-      const commitResponse = await Axios.post('/git/commits', {
+      const commitResponse = await instance.post('/git/commits', {
         message: commit_message,
         author: {
           name: owner,
@@ -106,7 +106,7 @@ const Action = async (payload) => {
 
     // 5. 更新分支引用
     console.log('5. 更新分支引用')
-    await Axios.patch(`/git/refs/heads/${branch}`, {
+    await instance.patch(`/git/refs/heads/${branch}`, {
       sha: newCommitSHA
     })
   } catch (error) {
@@ -32747,6 +32747,14 @@ module.exports = {
   error,
   setFailed
 }
+
+
+/***/ }),
+
+/***/ 9041:
+/***/ ((module) => {
+
+module.exports = eval("require")("instance");
 
 
 /***/ }),
