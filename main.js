@@ -20,10 +20,10 @@ const Action = require('./actions')
     const context = github.context
     log.info(`context: ${context}`)
     log.info(`context: ${JSON.stringify(context)}`)
-    // const owner = context.repo.owner
-    // const repo = context.repo.repo
-    // log.info(`owner: ${owner}`)
-    // log.info(`repo: ${repo}`)
+    const owner = context.repo.owner
+    const repo = context.repo.repo
+    log.info(`owner: ${owner}`)
+    log.info(`repo: ${repo}`)
     const payload = { token, JueJinId, commit_message, branch }
 
     await Action(payload)

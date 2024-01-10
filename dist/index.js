@@ -28955,6 +28955,14 @@ module.exports = {
 
 /***/ }),
 
+/***/ 6866:
+/***/ ((module) => {
+
+module.exports = eval("require")("./actions");
+
+
+/***/ }),
+
 /***/ 9491:
 /***/ ((module) => {
 
@@ -30842,6 +30850,7 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(2186)
 const github = __nccwpck_require__(5438)
 const log = __nccwpck_require__(7454)
+const Action = __nccwpck_require__(6866)
 ;(async () => {
   try {
     // 获取输入
@@ -30853,29 +30862,25 @@ const log = __nccwpck_require__(7454)
     const branch = core.getInput('branch')
     log.info(`commit_message: ${commit_message}`)
     log.info(`branch: ${branch}`)
+    console.log('github', github)
     log.info(`github: ${github}`)
-    const { context } = github.context
-    const { owner, repo } = context.repo
+    log.info(`github: ${JSON.stringify(github)}`)
+    // const { context } = github.context
+    const context = github.context
+    log.info(`context: ${context}`)
+    log.info(`context: ${JSON.stringify(context)}`)
+    const owner = context.repo.owner
+    const repo = context.repo.repo
     log.info(`owner: ${owner}`)
     log.info(`repo: ${repo}`)
-    const payload = { token, JueJinId, commit_message, branch, owner, repo }
+    const payload = { token, JueJinId, commit_message, branch }
+
+    await Action(payload)
   } catch (error) {
     log.error(error)
     core.setFailed(error.message)
   }
 })()
-
-// const getJueJinInfo = require('./crawler/juejin')
-// const renderJueJinCard = require('./render/juejin')
-
-// async function renderJueJin(id) {
-//   const data = await getJueJinInfo(id)
-//   renderJueJinCard(data)
-// }
-
-// const JueJinId = core.getInput('JueJinId')
-
-// renderJueJin(JueJinId || '4344859055106215')
 
 })();
 

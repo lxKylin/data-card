@@ -1,6 +1,6 @@
 const axios = require('axios')
 const fs = require('fs')
-const log = require('log')
+const log = require('./utils/log')
 
 const Action = async (payload) => {
   const { token, JueJinId, commit_message, branch, owner, repo } = payload
