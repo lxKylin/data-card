@@ -5,6 +5,7 @@
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const axios = __nccwpck_require__(8757)
+const fs = __nccwpck_require__(7147)
 const log = __nccwpck_require__(7454)
 
 const getJueJinInfo = __nccwpck_require__(9178)

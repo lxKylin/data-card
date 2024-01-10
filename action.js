@@ -1,4 +1,5 @@
 const axios = require('axios')
+const fs = require('fs')
 const log = require('./utils/log')
 
 const getJueJinInfo = require('./crawler/juejin')
