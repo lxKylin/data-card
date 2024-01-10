@@ -5,7 +5,6 @@
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const axios = __nccwpck_require__(8757)
-const fs = __nccwpck_require__(7147)
 const log = __nccwpck_require__(7454)
 
 const getJueJinInfo = __nccwpck_require__(9178)
@@ -42,6 +41,8 @@ const Action = async (payload) => {
 
     const jueJinSvg = await renderJueJin(JueJinId)
     console.log(jueJinSvg, 'jueJinSvg,同步读取文件内容')
+    const imageContent = fs.readFileSync('./images/test.jpeg')
+    const juejin = fs.readFileSync('./images/juejin-card.svg')
     // 2. 创建 Blobs（base64 编码）
     console.log('2. 创建 Blobs（base64 编码）')
     const createBlob = async (content, encoding) => {
@@ -57,7 +58,14 @@ const Action = async (payload) => {
       'base64',
       'image/svg+xml'
     )
+    const imageContentSHA = await createBlob(
+      imageContent.toString('base64'),
+      'base64'
+    )
+    const juejinSHA = await createBlob(juejin.toString('base64'), 'base64')
     console.log('jueJinSvgSHA', jueJinSvgSHA)
+    console.log('imageContentSHA', imageContentSHA)
+    console.log('juejinSHA', juejinSHA)
     // 3. 创建一个定义了文件夹结构的树
     console.log('3. 创建一个定义了文件夹结构的树')
     const createTree = async (baseTreeSHA, blobs) => {
@@ -79,7 +87,9 @@ const Action = async (payload) => {
     }
 
     const treeSHA = await createTree(lastCommitSHA, [
-      { path: 'image/juejin.svg', sha: jueJinSvgSHA }
+      { path: 'image/juejin.svg', sha: jueJinSvgSHA },
+      { path: 'image/test.jpeg', sha: imageContentSHA },
+      { path: 'image/card.svg', sha: juejinSHA }
     ])
     console.log('treeSHA', treeSHA)
 
