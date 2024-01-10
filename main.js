@@ -1,7 +1,7 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 const log = require('./utils/log')
-const Action = require('./actions')
+const Action = require('./app/action')
 ;(async () => {
   try {
     // 获取输入

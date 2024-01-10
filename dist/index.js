@@ -28955,10 +28955,10 @@ module.exports = {
 
 /***/ }),
 
-/***/ 6866:
+/***/ 2456:
 /***/ ((module) => {
 
-module.exports = eval("require")("./actions");
+module.exports = eval("require")("./app/action");
 
 
 /***/ }),
@@ -30850,7 +30850,7 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(2186)
 const github = __nccwpck_require__(5438)
 const log = __nccwpck_require__(7454)
-const Action = __nccwpck_require__(6866)
+const Action = __nccwpck_require__(2456)
 ;(async () => {
   try {
     // 获取输入
