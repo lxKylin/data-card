@@ -34,7 +34,7 @@ const Action = async (payload) => {
     const lastCommitSHA = branchResponse.data.commit.sha
     console.log(lastCommitSHA, 'lastCommitSHA')
 
-    const jueJinSvg = renderJueJin(JueJinId)
+    const jueJinSvg = await renderJueJin(JueJinId)
     console.log(jueJinSvg, 'jueJinSvg,同步读取文件内容')
     // try {
     //   // 同步读取文件内容
