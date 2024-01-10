@@ -75,12 +75,11 @@ const Action = async (payload) => {
         base_tree: baseTreeSHA,
         tree: tree
       })
-      console.log(treeResponse, 'treeResponse')
       return treeResponse.data.sha
     }
 
     const treeSHA = await createTree(lastCommitSHA, [
-      { path: 'test/juejin.svg', sha: jueJinSvgSHA }
+      { path: 'image/juejin.svg', sha: jueJinSvgSHA }
     ])
     console.log('treeSHA', treeSHA)
 
