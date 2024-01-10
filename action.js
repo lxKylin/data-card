@@ -7,7 +7,7 @@ const renderJueJinCard = require('./render/juejin')
 
 async function renderJueJin(id) {
   const data = await getJueJinInfo(id)
-  renderJueJinCard(data)
+  return renderJueJinCard(data)
 }
 
 const Action = async (payload) => {

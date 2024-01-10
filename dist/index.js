@@ -13,7 +13,7 @@ const renderJueJinCard = __nccwpck_require__(3060)
 
 async function renderJueJin(id) {
   const data = await getJueJinInfo(id)
-  renderJueJinCard(data)
+  return renderJueJinCard(data)
 }
 
 const Action = async (payload) => {
