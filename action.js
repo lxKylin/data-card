@@ -48,7 +48,8 @@ const Action = async (payload) => {
     }
     const jueJinSvgSHA = await createBlob(
       jueJinSvg.toString('base64'),
-      'base64'
+      'base64',
+      'image/svg+xml'
     )
     console.log('jueJinSvgSHA', jueJinSvgSHA)
     // 3. 创建一个定义了文件夹结构的树
@@ -58,16 +59,17 @@ const Action = async (payload) => {
         return {
           path: blob.path,
           mode: '100644',
-          type: 'image/svg+xml',
-          // type: 'blob',
+          type: 'blob',
           sha: blob.sha
         }
       })
+      console.log(tree, 'tree')
 
       const treeResponse = await instance.post('/git/trees', {
         base_tree: baseTreeSHA,
         tree: tree
       })
+      console.log(treeResponse, 'treeResponse')
       return treeResponse.data.sha
     }
 
