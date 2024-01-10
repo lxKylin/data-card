@@ -7,33 +7,33 @@
 const axios = __nccwpck_require__(8757)
 const fs = __nccwpck_require__(7147)
 const log = __nccwpck_require__(7454)
-const { Octokit } = __nccwpck_require__(6762)
+// const { Octokit } = require('@octokit/core')
 
 const Action = async (payload) => {
   const { token, JueJinId, commit_message, branch, owner, repo } = payload
 
-  const octokit = new Octokit({
-    auth: token
-  })
-  console.log('octokit', octokit)
+  // const octokit = new Octokit({
+  //   auth: token
+  // })
+  // console.log('octokit', octokit)
 
-  async function b() {
-    const a = await octokit.request(`GET /repos/${owner}/${repo}/commits`, {
-      owner,
-      repo,
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28'
-      }
-    })
-    console.log('a', a)
-  }
+  // async function b() {
+  //   const a = await octokit.request(`GET /repos/${owner}/${repo}/commits`, {
+  //     owner,
+  //     repo,
+  //     headers: {
+  //       'X-GitHub-Api-Version': '2022-11-28'
+  //     }
+  //   })
+  //   console.log('a', a)
+  // }
 
-  b()
+  // b()
 
   log.info(`payload: ${JSON.stringify(payload)}`)
 
   // 创建一个 axios 实例，包含共享的请求配置
-  const Axios = axios.create({
+  const instance = axios.create({
     baseURL: `https://api.github.com/repos/${owner}/${repo}`,
     headers: {
       Authorization: `Bearer ${token}`,
@@ -42,9 +42,12 @@ const Action = async (payload) => {
   })
 
   try {
-    const branchResponse = await Axios.get(`/branches/${branch}`)
+    const branchResponse = await instance.get(`/branches/${branch}`)
     log.info(branchResponse, 'branchResponse1')
     log.info(JSON.stringify(branchResponse), 'branchResponse2')
+    const commitsResponse = await instance.get(`/commits`)
+    log.info(commitsResponse, 'commitsResponse1')
+    log.info(JSON.stringify(commitsResponse), 'commitsResponse2')
   } catch (error) {
     console.log('error', error)
   }
