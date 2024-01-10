@@ -40,14 +40,15 @@ const Action = async (payload) => {
     const lastCommitSHA = branchResponse.data.commit.sha
     console.log(lastCommitSHA, 'lastCommitSHA')
 
-    renderJueJin(JueJinId)
-    try {
-      // 同步读取文件内容
-      const jueJinSvg = fs.readFileSync('./images/juejin-card.svg', 'utf8')
-      console.log('同步读取文件内容:', jueJinSvg)
-    } catch (err) {
-      console.error('读取文件时发生错误:', err)
-    }
+    const jueJinSvg = renderJueJin(JueJinId)
+    console.log(jueJinSvg, 'jueJinSvg,同步读取文件内容')
+    // try {
+    //   // 同步读取文件内容
+    //   const jueJinSvg = fs.readFileSync('./images/juejin-card.svg', 'utf8')
+    //   console.log('同步读取文件内容:', jueJinSvg)
+    // } catch (err) {
+    //   console.error('读取文件时发生错误:', err)
+    // }
     // 2. 创建 Blobs（base64 编码）
     console.log('2. 创建 Blobs（base64 编码）')
     const createBlob = async (content, encoding) => {
