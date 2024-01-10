@@ -13,6 +13,7 @@ const Action = require('./actions')
     const branch = core.getInput('branch')
     log.info(`commit_message: ${commit_message}`)
     log.info(`branch: ${branch}`)
+    console.log('github', github)
     log.info(`github: ${github}`)
     log.info(`github: ${JSON.stringify(github)}`)
     // const { context } = github.context

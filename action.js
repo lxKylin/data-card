@@ -5,6 +5,8 @@ const log = require('log')
 const Action = async (payload) => {
   const { token, JueJinId, commit_message, branch, owner, repo } = payload
 
+  log.info(`payload: ${payload}`)
+
   // 创建一个 axios 实例，包含共享的请求配置
   const Axios = axios.create({
     baseURL: `https://api.github.com/repos/${owner}/${repo}`,
