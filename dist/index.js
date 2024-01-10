@@ -9,26 +9,26 @@ const fs = __nccwpck_require__(7147)
 const log = __nccwpck_require__(7454)
 const { Octokit } = __nccwpck_require__(6762)
 
-const octokit = new Octokit({
-  auth: token
-})
-console.log('octokit', octokit)
-
-async function b() {
-  const a = await octokit.request(`GET /repos/${owner}/${repo}/commits`, {
-    owner,
-    repo,
-    headers: {
-      'X-GitHub-Api-Version': '2022-11-28'
-    }
-  })
-  console.log('a', a)
-}
-
-b()
-
 const Action = async (payload) => {
   const { token, JueJinId, commit_message, branch, owner, repo } = payload
+
+  const octokit = new Octokit({
+    auth: token
+  })
+  console.log('octokit', octokit)
+
+  async function b() {
+    const a = await octokit.request(`GET /repos/${owner}/${repo}/commits`, {
+      owner,
+      repo,
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    })
+    console.log('a', a)
+  }
+
+  b()
 
   log.info(`payload: ${JSON.stringify(payload)}`)
 

@@ -3,26 +3,26 @@ const fs = require('fs')
 const log = require('./utils/log')
 const { Octokit } = require('@octokit/core')
 
-const octokit = new Octokit({
-  auth: token
-})
-console.log('octokit', octokit)
-
-async function b() {
-  const a = await octokit.request(`GET /repos/${owner}/${repo}/commits`, {
-    owner,
-    repo,
-    headers: {
-      'X-GitHub-Api-Version': '2022-11-28'
-    }
-  })
-  console.log('a', a)
-}
-
-b()
-
 const Action = async (payload) => {
   const { token, JueJinId, commit_message, branch, owner, repo } = payload
+
+  const octokit = new Octokit({
+    auth: token
+  })
+  console.log('octokit', octokit)
+
+  async function b() {
+    const a = await octokit.request(`GET /repos/${owner}/${repo}/commits`, {
+      owner,
+      repo,
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    })
+    console.log('a', a)
+  }
+
+  b()
 
   log.info(`payload: ${JSON.stringify(payload)}`)
 
