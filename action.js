@@ -45,7 +45,7 @@ const Action = async (payload) => {
       console.log(`Directory '${targetDirectory}' has been created.22222`)
     }
 
-    fs.writeFile(
+    fs.writeFileSync(
       path.resolve(__dirname, `${targetDirectory}/juejin-card.svg`),
       svgContent,
       (err) => {
@@ -57,7 +57,17 @@ const Action = async (payload) => {
       }
     )
 
-    const imageContent = fs.readFileSync(`${targetDirectory}/juejin-card.svg`)
+    const imageContent = fs.readFileSync(
+      `${targetDirectory}/juejin-card.svg`,
+      'utf-8',
+      (err, data) => {
+        if (err) {
+          console.log('readFileSync', err)
+          return
+        }
+        console.log('readFileSync', data)
+      }
+    )
 
     console.log(imageContent, 'imageContent同步读取文件内容')
 
