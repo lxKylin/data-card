@@ -49,8 +49,11 @@ const Action = async (payload) => {
       path.resolve(__dirname, '../image/juejin-card.svg'),
       svgContent,
       (err) => {
-        if (err) throw err
-        console.log('SVG file has been created!222222')
+        if (err) {
+          throw err
+        } else {
+          console.log('SVG file has been created!222222')
+        }
       }
     )
 
