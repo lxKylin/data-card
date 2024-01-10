@@ -36,19 +36,13 @@ const Action = async (payload) => {
 
     const jueJinSvg = await renderJueJin(JueJinId)
     console.log(jueJinSvg, 'jueJinSvg,同步读取文件内容')
-    // try {
-    //   // 同步读取文件内容
-    //   const jueJinSvg = fs.readFileSync('./images/juejin-card.svg', 'utf8')
-    //   console.log('同步读取文件内容:', jueJinSvg)
-    // } catch (err) {
-    //   console.error('读取文件时发生错误:', err)
-    // }
     // 2. 创建 Blobs（base64 编码）
     console.log('2. 创建 Blobs（base64 编码）')
     const createBlob = async (content, encoding) => {
       const blobResponse = await instance.post('/git/blobs', {
         content: content,
-        encoding: encoding
+        encoding: encoding,
+        type: 'image/svg+xml'
       })
       return blobResponse.data.sha
     }
