@@ -22,7 +22,7 @@ const Action = require('./action')
     const repo = context.repo.repo
     log.info(`owner: ${owner}`)
     log.info(`repo: ${repo}`)
-    const payload = { token, JueJinId, commit_message, branch }
+    const payload = { token, JueJinId, commit_message, branch, owner, repo }
 
     await Action(payload)
   } catch (error) {

@@ -38436,7 +38436,7 @@ const Action = __nccwpck_require__(4582)
     const repo = context.repo.repo
     log.info(`owner: ${owner}`)
     log.info(`repo: ${repo}`)
-    const payload = { token, JueJinId, commit_message, branch }
+    const payload = { token, JueJinId, commit_message, branch, owner, repo }
 
     await Action(payload)
   } catch (error) {
