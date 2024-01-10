@@ -4,7 +4,7 @@
 /***/ 4582:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-const instance = __nccwpck_require__(9041)
+const axios = __nccwpck_require__(8757)
 const fs = __nccwpck_require__(7147)
 const log = __nccwpck_require__(7454)
 
@@ -21,8 +21,8 @@ const Action = async (payload) => {
 
   log.info(`payload: ${JSON.stringify(payload)}`)
 
-  // 创建一个 instance 实例，包含共享的请求配置
-  const instance = instance.create({
+  // 创建一个 axios 实例，包含共享的请求配置
+  const instance = axios.create({
     baseURL: `https://api.github.com/repos/${owner}/${repo}`,
     headers: {
       Authorization: `Bearer ${token}`,
@@ -32747,14 +32747,6 @@ module.exports = {
   error,
   setFailed
 }
-
-
-/***/ }),
-
-/***/ 9041:
-/***/ ((module) => {
-
-module.exports = eval("require")("instance");
 
 
 /***/ }),

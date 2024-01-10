@@ -1,4 +1,4 @@
-const instance = require('instance')
+const axios = require('axios')
 const fs = require('fs')
 const log = require('./utils/log')
 
@@ -15,8 +15,8 @@ const Action = async (payload) => {
 
   log.info(`payload: ${JSON.stringify(payload)}`)
 
-  // 创建一个 instance 实例，包含共享的请求配置
-  const instance = instance.create({
+  // 创建一个 axios 实例，包含共享的请求配置
+  const instance = axios.create({
     baseURL: `https://api.github.com/repos/${owner}/${repo}`,
     headers: {
       Authorization: `Bearer ${token}`,
