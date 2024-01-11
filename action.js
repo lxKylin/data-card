@@ -84,10 +84,7 @@ const Action = async (payload) => {
       })
       return blobResponse.data.sha
     }
-    const jueJinSvgSHA = await createBlob(
-      jueJinSvg.toString('base64'),
-      'base64'
-    )
+    const jueJinSvgSHA = await createBlob(jueJinSvg.toString('base64'), 'utf-8')
     console.log('jueJinSvgSHA', jueJinSvgSHA)
 
     // const imageContentSHA = await createBlob(
