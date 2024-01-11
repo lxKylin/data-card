@@ -1,6 +1,4 @@
 const axios = require('axios')
-// const fs = require('fs')
-// const path = require('path')
 const log = require('./utils/log')
 
 const getJueJinInfo = require('./crawler/juejin')
@@ -31,52 +29,15 @@ const Action = async (payload) => {
     // 1. 获取特定分支的最后一次提交 SHA
     console.log('1. 获取特定分支的最后一次提交 SHA')
     const branchResponse = await instance.get(`/branches/${branch}`)
-    console.log(branchResponse, 'branchResponse1')
     console.log(branchResponse.data, 'branchResponse.data')
     console.log(branchResponse.data.commit, 'branchResponse.data.commit')
     const lastCommitSHA = branchResponse.data.commit.sha
     console.log(lastCommitSHA, 'lastCommitSHA')
 
-    // const svgContent = await renderJueJin(JueJinId)
-
-    // const targetDirectory = path.resolve(__dirname, '../image')
-
-    // // 检查目录是否存在，如果不存在则创建
-    // if (!fs.existsSync(targetDirectory)) {
-    //   fs.mkdirSync(targetDirectory, { recursive: true })
-    //   console.log(`Directory '${targetDirectory}' has been created.22222`)
-    // }
-
-    // fs.writeFileSync(
-    //   path.resolve(__dirname, `${targetDirectory}/juejin-card.svg`),
-    //   svgContent,
-    //   (err) => {
-    //     if (err) {
-    //       throw err
-    //     } else {
-    //       console.log('SVG file has been created!222222')
-    //     }
-    //   }
-    // )
-
-    // const imageContent = fs.readFileSync(
-    //   `${targetDirectory}/juejin-card.svg`,
-    //   'utf-8',
-    //   (err, data) => {
-    //     if (err) {
-    //       console.log('readFileSync', err)
-    //       return
-    //     }
-    //     console.log('readFileSync', data)
-    //   }
-    // )
-
-    // console.log(imageContent, 'imageContent同步读取文件内容')
-
-    const jueJinSvg = await renderJueJin(JueJinId)
-    console.log(jueJinSvg, 'jueJinSvg,同步读取文件内容')
     // 2. 创建 Blobs（base64 编码）
     console.log('2. 创建 Blobs（base64 编码）')
+    const jueJinSvg = await renderJueJin(JueJinId)
+    console.log(jueJinSvg, 'jueJinSvg,同步读取文件内容')
     const createBlob = async (content, encoding) => {
       const blobResponse = await instance.post('/git/blobs', {
         content,
@@ -87,12 +48,6 @@ const Action = async (payload) => {
     const jueJinSvgSHA = await createBlob(jueJinSvg.toString('base64'), 'utf-8')
     console.log('jueJinSvgSHA', jueJinSvgSHA)
 
-    // const imageContentSHA = await createBlob(
-    //   imageContent.toString('base64'),
-    //   'base64'
-    // )
-
-    // console.log(imageContentSHA, 'imageContentSHA')
     // 3. 创建一个定义了文件夹结构的树
     console.log('3. 创建一个定义了文件夹结构的树')
     const createTree = async (baseTreeSHA, blobs) => {
@@ -115,7 +70,6 @@ const Action = async (payload) => {
 
     const treeSHA = await createTree(lastCommitSHA, [
       { path: 'image/juejin.svg', sha: jueJinSvgSHA }
-      // { path: 'image/test.svg', sha: imageContentSHA }
     ])
     console.log('treeSHA', treeSHA)
 
