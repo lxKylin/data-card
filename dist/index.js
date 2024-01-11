@@ -132,7 +132,8 @@ const Action = async (payload) => {
         message: commit_message,
         author: {
           name: owner,
-          email: `${owner}@users.noreply.github.com` // "actions@github.com"
+          email: 'actions@github.com' // "actions@github.com"
+          // email: `${owner}@users.noreply.github.com` // "actions@github.com"
         },
         parents: [lastCommitSHA],
         tree: treeSHA
