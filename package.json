@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "start": "node ./index.js",
     "serve": "node ./main.js",
     "build": "ncc build main.js -o dist"
   },

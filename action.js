@@ -1,7 +1,7 @@
 const axios = require('axios')
 const log = require('./utils/log')
 
-const getJueJinInfo = require('./crawler/juejin')
+const getJueJinInfo = require('./api/juejin')
 const renderJueJinCard = require('./render/juejin')
 
 async function renderJueJin(id) {
@@ -19,7 +19,6 @@ const Action = async (payload) => {
     baseURL: `https://api.github.com/repos/${owner}/${repo}`,
     headers: {
       Authorization: `Bearer ${token}`,
-      // 'Content-Type': 'application/json',
       Accept: 'application/vnd.github+json',
       'x-github-api-version': '2022-11-28'
     }
@@ -34,19 +33,25 @@ const Action = async (payload) => {
     const lastCommitSHA = branchResponse.data.commit.sha
     console.log(lastCommitSHA, 'lastCommitSHA')
 
-    // 2. 创建 Blobs（base64 编码）
-    console.log('2. 创建 Blobs（base64 编码）')
-    const jueJinSvg = await renderJueJin(JueJinId)
-    console.log(jueJinSvg, 'jueJinSvg,同步读取文件内容')
-    const createBlob = async (content, encoding) => {
-      const blobResponse = await instance.post('/git/blobs', {
-        content,
-        encoding
-      })
-      return blobResponse.data.sha
+    // 掘金
+    if (JueJinId) {
+      // 2. 创建 Blobs（base64 编码）
+      console.log('2. 创建 Blobs（base64 编码）')
+      const jueJinSvg = await renderJueJin(JueJinId)
+      console.log(jueJinSvg, 'jueJinSvg,同步读取文件内容')
+      const createBlob = async (content, encoding) => {
+        const blobResponse = await instance.post('/git/blobs', {
+          content,
+          encoding
+        })
+        return blobResponse.data.sha
+      }
+      const jueJinSvgSHA = await createBlob(
+        jueJinSvg.toString('base64'),
+        'utf-8'
+      )
+      console.log('jueJinSvgSHA', jueJinSvgSHA)
     }
-    const jueJinSvgSHA = await createBlob(jueJinSvg.toString('base64'), 'utf-8')
-    console.log('jueJinSvgSHA', jueJinSvgSHA)
 
     // 3. 创建一个定义了文件夹结构的树
     console.log('3. 创建一个定义了文件夹结构的树')
@@ -68,9 +73,12 @@ const Action = async (payload) => {
       return treeResponse.data.sha
     }
 
-    const treeSHA = await createTree(lastCommitSHA, [
-      { path: 'image/juejin.svg', sha: jueJinSvgSHA }
-    ])
+    const treeSHA = await createTree(
+      lastCommitSHA,
+      [{ path: 'image/juejin.svg', sha: jueJinSvgSHA || null }].filter(
+        (tree) => tree != null
+      )
+    )
     console.log('treeSHA', treeSHA)
 
     // 4. 创建提交

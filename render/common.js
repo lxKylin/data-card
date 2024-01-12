@@ -24,9 +24,9 @@ function render(items, theme = 'default') {
     textTags += renderText(items[i])
   }
 
-  const svgContent = `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='382' height='228' viewBox='0 0 382 228'>
+  const svgContent = `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='382' height='210' viewBox='0 0 382 210'>
   <defs>
-    <filter id='Card' x='0' y='0' width='382' height='228' filterUnits='userSpaceOnUse'>
+    <filter id='Card' x='0' y='0' width='382' height='210' filterUnits='userSpaceOnUse'>
       <feOffset dy='3' input='SourceAlpha'/>
       <feGaussianBlur stdDeviation='3' result='blur'/>
       <feFlood flood-opacity='0.161'/>
@@ -35,28 +35,28 @@ function render(items, theme = 'default') {
     </filter>
   </defs>
   <g transform='matrix(1, 0, 0, 1, 0, 0)' filter='url(#Card)'>
-    <rect id='Card-2' data-name='Card' width='364' height='210' rx='8' transform='translate(9 6)' fill='${backgroundColor}'/>
+    <rect id='Card-2' data-name='Card' width='364' height='188' rx='8' transform='translate(9 6)' fill='${backgroundColor}'/>
   </g>
   ${textTags}
 </svg>
 `
 
-  // const targetDirectory = path.resolve(__dirname, '../image')
+  const targetDirectory = path.resolve(__dirname, '../image')
 
-  // // 检查目录是否存在，如果不存在则创建
-  // if (!fs.existsSync(targetDirectory)) {
-  //   fs.mkdirSync(targetDirectory, { recursive: true })
-  //   console.log(`Directory '${targetDirectory}' has been created.`)
-  // }
+  // 检查目录是否存在，如果不存在则创建
+  if (!fs.existsSync(targetDirectory)) {
+    fs.mkdirSync(targetDirectory, { recursive: true })
+    console.log(`Directory '${targetDirectory}' has been created.`)
+  }
 
-  // fs.writeFile(
-  //   path.resolve(__dirname, '../image/juejin-card.svg'),
-  //   svgContent,
-  //   (err) => {
-  //     if (err) throw err
-  //     console.log('SVG file has been created!')
-  //   }
-  // )
+  fs.writeFile(
+    path.resolve(__dirname, '../image/juejin-card.svg'),
+    svgContent,
+    (err) => {
+      if (err) throw err
+      console.log('SVG file has been created!')
+    }
+  )
 
   return svgContent
 }
