@@ -2,7 +2,7 @@ const getTheme = require('../common/theme.js')
 const fs = require('fs')
 const path = require('path')
 
-function render(items, theme = 'default') {
+function render(items, type, theme = 'default') {
   const { titleColor, backgroundColor, labelColor, valueColor } =
     getTheme(theme)
   let textTags = ''
@@ -50,7 +50,7 @@ function render(items, theme = 'default') {
   }
 
   fs.writeFile(
-    path.resolve(__dirname, '../image/juejin-card.svg'),
+    path.resolve(__dirname, `../image/${type}-card.svg`),
     svgContent,
     (err) => {
       if (err) throw err
