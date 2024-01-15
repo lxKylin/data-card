@@ -10,9 +10,9 @@ inputs:
   JueJinId:
     description: 'your JueJinId'
     required: true
-  # csdnId:
-  #   description: 'your csdnId'
-  #   required: true
+  csdnName:
+    description: 'your csdn username'
+    required: true
   # LeetCodeId:
   #   description: 'your LeetCodeId'
   #   required: true

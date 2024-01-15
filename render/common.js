@@ -54,7 +54,7 @@ function render(items, type, theme = 'default') {
     svgContent,
     (err) => {
       if (err) throw err
-      console.log('SVG file has been created!')
+      console.log(`${type} SVG file has been created!`)
     }
   )
 

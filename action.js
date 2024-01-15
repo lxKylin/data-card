@@ -9,8 +9,17 @@ async function renderJueJin(id) {
   return renderJueJinCard(data)
 }
 
+const getCSDNInfo = require('./api/csdn')
+const renderCSDNCard = require('./render/csdn')
+
+async function renderCSDN(name) {
+  const data = await getCSDNInfo(name)
+  renderCSDNCard(data)
+}
+
 const Action = async (payload) => {
-  const { token, JueJinId, commit_message, branch, owner, repo } = payload
+  const { token, JueJinId, csdnName, commit_message, branch, owner, repo } =
+    payload
 
   log.info(`payload: ${JSON.stringify(payload)}`)
 
@@ -33,24 +42,40 @@ const Action = async (payload) => {
     const lastCommitSHA = branchResponse.data.commit.sha
     console.log(lastCommitSHA, 'lastCommitSHA')
 
+    const createBlob = async (content, encoding) => {
+      const blobResponse = await instance.post('/git/blobs', {
+        content,
+        encoding
+      })
+      return blobResponse.data.sha
+    }
+
     // 掘金
     if (JueJinId) {
       // 2. 创建 Blobs（base64 编码）
-      console.log('2. 创建 Blobs（base64 编码）')
+      console.log('2. 创建 Blobs（base64 编码）- juejin')
       const jueJinSvg = await renderJueJin(JueJinId)
       console.log(jueJinSvg, 'jueJinSvg,同步读取文件内容')
-      const createBlob = async (content, encoding) => {
-        const blobResponse = await instance.post('/git/blobs', {
-          content,
-          encoding
-        })
-        return blobResponse.data.sha
-      }
+
       const jueJinSvgSHA = await createBlob(
         jueJinSvg.toString('base64'),
         'utf-8'
       )
       console.log('jueJinSvgSHA', jueJinSvgSHA)
+    }
+
+    // CSDN
+    if (csdnName) {
+      // 2. 创建 Blobs（base64 编码）
+      console.log('2. 创建 Blobs（base64 编码）- csdn')
+      const csndSvg = await renderCSDN(csdnName)
+      console.log(csndSvg, 'csndSvg,同步读取文件内容')
+
+      const csndSvgSvgSHA = await createBlob(
+        csndSvgSvg.toString('base64'),
+        'utf-8'
+      )
+      console.log('csndSvgSvgSHA', csndSvgSvgSHA)
     }
 
     // 3. 创建一个定义了文件夹结构的树
@@ -75,9 +100,10 @@ const Action = async (payload) => {
 
     const treeSHA = await createTree(
       lastCommitSHA,
-      [{ path: 'image/juejin.svg', sha: jueJinSvgSHA || null }].filter(
-        (tree) => tree != null
-      )
+      [
+        { path: 'image/juejin.svg', sha: jueJinSvgSHA || null },
+        { path: 'image/csdn.svg', sha: csndSvgSvgSHA || null }
+      ].filter((tree) => tree != null)
     )
     console.log('treeSHA', treeSHA)
 
