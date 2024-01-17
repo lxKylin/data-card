@@ -2,23 +2,8 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 const log = require('./utils/log')
 const Action = require('./action')
-const getJueJinInfo = require('./api/juejin')
-const renderJueJinCard = require('./render/juejin')
-const getCSDNInfo = require('./api/csdn')
-const renderCSDNCard = require('./render/csdn')
+
 ;(async () => {
-  async function renderJueJin(id) {
-    const data = await getJueJinInfo(id)
-    renderJueJinCard(data)
-  }
-
-  renderJueJin('4344859055106215')
-
-  async function renderCSDN(name) {
-    const data = await getCSDNInfo(name)
-    renderCSDNCard(data)
-  }
-  renderCSDN('weixin_46926182')
   try {
     // 获取输入
     log.info(`开始获取输入`)
