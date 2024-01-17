@@ -14,7 +14,7 @@ const renderCSDNCard = require('./render/csdn')
 
 async function renderCSDN(name) {
   const data = await getCSDNInfo(name)
-  renderCSDNCard(data)
+  return renderCSDNCard(data)
 }
 
 const Action = async (payload) => {
@@ -51,30 +51,26 @@ const Action = async (payload) => {
     }
 
     // 掘金
+    let jueJinSvgSHA = null
     if (JueJinId) {
       // 2. 创建 Blobs（base64 编码）
       console.log('2. 创建 Blobs（base64 编码）- juejin')
       const jueJinSvg = await renderJueJin(JueJinId)
       console.log(jueJinSvg, 'jueJinSvg,同步读取文件内容')
 
-      const jueJinSvgSHA = await createBlob(
-        jueJinSvg.toString('base64'),
-        'utf-8'
-      )
+      jueJinSvgSHA = await createBlob(jueJinSvg.toString('base64'), 'utf-8')
       console.log('jueJinSvgSHA', jueJinSvgSHA)
     }
 
     // CSDN
+    let csndSvgSvgSHA = null
     if (csdnName) {
       // 2. 创建 Blobs（base64 编码）
       console.log('2. 创建 Blobs（base64 编码）- csdn')
       const csndSvg = await renderCSDN(csdnName)
       console.log(csndSvg, 'csndSvg,同步读取文件内容')
 
-      const csndSvgSvgSHA = await createBlob(
-        csndSvgSvg.toString('base64'),
-        'utf-8'
-      )
+      csndSvgSvgSHA = await createBlob(csndSvgSvg.toString('base64'), 'utf-8')
       console.log('csndSvgSvgSHA', csndSvgSvgSHA)
     }
 
