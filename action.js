@@ -97,9 +97,9 @@ const Action = async (payload) => {
     const treeSHA = await createTree(
       lastCommitSHA,
       [
-        { path: 'image/juejin.svg', sha: jueJinSvgSHA || null },
-        { path: 'image/csdn.svg', sha: csndSvgSvgSHA || null }
-      ].filter((tree) => tree != null)
+        { path: 'image/juejin.svg', sha: jueJinSvgSHA },
+        { path: 'image/csdn.svg', sha: csndSvgSvgSHA }
+      ].filter((tree) => tree.sha != null)
     )
     console.log('treeSHA', treeSHA)
 
