@@ -41,11 +41,11 @@ async function getJueJinInfo(user_id) {
     )
     console.log(res2.data, '文章数据')
     result.article_count = res2.data.count
+
+    return result
   } catch (e) {
     console.error('获取掘金数据失败：', e)
   }
-
-  return result
 }
 
 module.exports = getJueJinInfo
