@@ -59098,7 +59098,7 @@ const Action = __nccwpck_require__(4582)
 
 ;(async () => {
   try {
-    console.log('测试是否有将更新的文件提交')
+    console.log('测试是否有将更新的文件提交-2')
     // 获取输入
     log.info(`开始获取输入`)
     const token = core.getInput('github_token')
