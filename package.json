@@ -4,7 +4,7 @@
   "main": "main.js",
   "scripts": {
     "serve": "node ./main.js",
-    "build": "ncc build main.js -o dists"
+    "build": "ncc build main.js -o dist"
   },
   "repository": "https://github.com/lxKylin/data-card.git",
   "author": "Kylin <1159469891@qq.com>",

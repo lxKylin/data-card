@@ -25,28 +25,28 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: index.js
-          path: dists
+          path: dist
       - name: Download Action File
         uses: actions/download-artifact@v2
         with:
           name: index.js
-          path: dists # 指定下载到本地的路径
-      - name: Copy Action File to Dist Folder
-        run: |
-          # 在这里进行文件拷贝操作
-          if [ ! -d "dist" ]; then
-            mkdir dist
-            echo "dist文件夹已创建"
-          else
-            echo "dist文件夹已存在"
-          fi
-          echo "开始移动index.js文件"
-          mv dists/*.js ./dist
-          echo "成功移动index.js文件"
-          echo "开始删除dists文件夹"
-          rm -rf dists
-          echo "成功删除dists文件夹"
-        shell: bash
+          path: dist # 指定下载到本地的路径
+      # - name: Copy Action File to Dist Folder
+      #   run: |
+      #     # 在这里进行文件拷贝操作
+      #     if [ ! -d "dist" ]; then
+      #       mkdir dist
+      #       echo "dist文件夹已创建"
+      #     else
+      #       echo "dist文件夹已存在"
+      #     fi
+      #     echo "开始移动index.js文件"
+      #     mv dists/*.js ./dist
+      #     echo "成功移动index.js文件"
+      #     echo "开始删除dists文件夹"
+      #     rm -rf dists
+      #     echo "成功删除dists文件夹"
+      #   shell: bash
       - name: Commit and Push Changes
         run: |
           echo "Commit and Push Changes"

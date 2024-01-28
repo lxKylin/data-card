@@ -5,6 +5,7 @@ const Action = require('./action')
 
 ;(async () => {
   try {
+    console.log('测试不使用文件拷贝')
     // 获取输入
     log.info(`开始获取输入`)
     const token = core.getInput('github_token')
