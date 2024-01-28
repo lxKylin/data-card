@@ -40,7 +40,12 @@ jobs:
           else
             echo "dist文件夹已存在"
           fi
+          echo "开始移动index.js文件"
           mv dists/*.js ./dist
+          echo "成功移动index.js文件"
+          echo "开始删除dists文件夹"
+          rm -rf dists
+          echo "成功删除dists文件夹"
         shell: bash
       - name: Commit and Push Changes
         run: |
