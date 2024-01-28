@@ -25,12 +25,12 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: index.js
-          path: dists
+          path: dist
       - name: Download Action File
         uses: actions/download-artifact@v2
         with:
           name: index.js
-          path: dists # 指定下载到本地的路径
+          path: dist # 指定下载到本地的路径
       - name: Copy Action File to Dist Folder
         run: |
           # 在这里进行文件拷贝操作
@@ -40,7 +40,7 @@ jobs:
           else
             echo "dist文件夹已存在"
           fi
-          mv dists/*.js ./dist
+          mv dist/*.js ./dist
         shell: bash
       - name: Commit and Push Changes
         run: |
