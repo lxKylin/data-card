@@ -1,8 +1,9 @@
-name: Upload Card Image
+name: Upload Action File
 
 on:
-  schedule:
-    - cron: '0 0 * * *' #每天0点执行
+  push:
+    branches:
+      - action
   workflow_dispatch:
 
 jobs:
@@ -14,32 +15,32 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3 #安装node.js
         with:
-          node-version: '18'
-      - name: install & serve
+          node-version: '16'
+      - name: install & build
         run: |
-          echo "npm run serve"
+          echo "npm run build"
           npm install
-          npm run serve
-      - name: Upload Card Image
+          npm run build
+      - name: Upload Action File
         uses: actions/upload-artifact@v2
         with:
-          name: juejin-card.svg
-          path: image
-      - name: Download Card Image
+          name: index.js
+          path: dist
+      - name: Download Action File
         uses: actions/download-artifact@v2
         with:
-          name: juejin-card.svg
-          path: image # 指定下载到本地的路径
-      - name: Copy Card Image to Images Folder
+          name: index.js
+          path: dist # 指定下载到本地的路径
+      - name: Copy Action File to Dist Folder
         run: |
           # 在这里进行文件拷贝操作
-          if [ ! -d "images" ]; then
-            mkdir images
-            echo "images文件夹已创建"
+          if [ ! -d "dists" ]; then
+            mkdir dists
+            echo "dist文件夹已创建"
           else
-            echo "images文件夹已存在"
+            echo "dists文件夹已存在"
           fi
-          mv image/*.svg ./images
+          mv dists/*.js ./dist
         shell: bash
       - name: Commit and Push Changes
         run: |
@@ -51,9 +52,9 @@ jobs:
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
           git add .
-          git commit -m "feat: Add Card Image"
+          git commit -m "feat: Update Action File"
           # origin 是远程仓库的默认名称，而 HEAD:main 表示将本地的 HEAD 分支（通常是当前分支）推送到远程仓库的 main 分支
-          git push origin HEAD:main
-          # git push https://$GITHUB_ACTOR:$PAT@github.com/lxKylin/juejin-card.git HEAD:main
+          # git push origin HEAD:action
+          git push https://$GITHUB_ACTOR:$PAT@github.com/lxKylin/juejin-card.git HEAD:action
         env:
           GH_TOKEN: ${{ secrets.DATA_CARD_TOKEN }}
