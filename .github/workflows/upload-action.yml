@@ -31,6 +31,12 @@ jobs:
         with:
           name: index.js
           path: dist # 指定下载到本地的路径
+      - name: Delete Image Folder
+        run: |
+          echo "开始删除dist/image文件夹"
+          rm -rf dist/image
+          echo "成功删除dist/image文件夹"
+        shell: bash
       # - name: Copy Action File to Dist Folder
       #   run: |
       #     # 在这里进行文件拷贝操作
