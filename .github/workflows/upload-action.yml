@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Card_Image:
+  Upload_Action_File:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code # 获取仓库代码
@@ -25,20 +25,20 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: index.js
-          path: dist
+          path: dists
       - name: Download Action File
         uses: actions/download-artifact@v2
         with:
           name: index.js
-          path: dist # 指定下载到本地的路径
+          path: dists # 指定下载到本地的路径
       - name: Copy Action File to Dist Folder
         run: |
           # 在这里进行文件拷贝操作
-          if [ ! -d "dists" ]; then
-            mkdir dists
+          if [ ! -d "dist" ]; then
+            mkdir dist
             echo "dist文件夹已创建"
           else
-            echo "dists文件夹已存在"
+            echo "dist文件夹已存在"
           fi
           mv dists/*.js ./dist
         shell: bash
