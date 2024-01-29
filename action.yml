@@ -7,10 +7,10 @@ inputs:
     description: Your GitHub token for authentication.
     required: true
 
-  JueJinId:
-    description: 'your JueJinId'
+  jue_jin_id:
+    description: 'your jue_jin_id'
     required: true
-  csdnName:
+  csdn_name:
     description: 'your csdn username'
     required: true
   # LeetCodeId:

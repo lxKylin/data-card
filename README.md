@@ -10,13 +10,13 @@
 
 ### yml配置
 
-| 参数           | 说明         | 类型   | 可选值 | 默认值                    |
-| -------------- | ------------ | ------ | ------ | ------------------------- |
-| github_token   | GitHub token | string | --     | --                        |  |
-| JueJinId       | 掘金ID       | string | --     | --                        |  |
-| csdnName       | CSDN用户名   | string | --     | --                        |
-| commit_message | commit信息   | string | --     | feat: Add Card Image [ci] |  |
-| branch         | 推送分支     | string | --     | main                      |  |
+| 参数           | 说明               | 类型   | 可选值 | 默认值                    |
+| -------------- | ------------------ | ------ | ------ | ------------------------- |
+| github_token   | GitHub token`必须` | string | --     | --                        |  |
+| jue_jin_id     | 掘金ID`必须`       | string | --     | --                        |  |
+| csdn_name      | CSDN用户名`必须`   | string | --     | --                        |
+| commit_message | commit信息         | string | --     | feat: Add Card Image [ci] |  |
+| branch         | 推送分支           | string | --     | main                      |  |
 
 ### yml Demo
 ```yml
