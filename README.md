@@ -13,7 +13,7 @@
 | 参数           | 说明               | 类型   | 可选值 | 默认值                    |
 | -------------- | ------------------ | ------ | ------ | ------------------------- |
 | github_token   | GitHub token`必须` | string | --     | --                        |  |
-| jue_jin_id     | 掘金ID             | string | --     | --                        |  |
+| juejin_id      | 掘金ID             | string | --     | --                        |  |
 | csdn_name      | CSDN用户名         | string | --     | --                        |
 | commit_message | commit信息         | string | --     | feat: Add Card Image [ci] |  |
 | branch         | 推送分支           | string | --     | main                      |  |
@@ -35,7 +35,7 @@ jobs:
         uses: lxKylin/data-card@action
         with:
           github_token: ${{ secrets.DATA_CARD_TOKEN }} # Github token
-          JueJinId: ${{ secrets.JUEJIN_PARAMS }} # 掘金用户id
+          juejin_id: ${{ secrets.JUEJIN_PARAMS }} # 掘金用户id
           commit_message: 'JueJin Card', # 提交信息，默认：feat: Add Card Image [ci]
           branch: main # 提交分支，默认：main
 

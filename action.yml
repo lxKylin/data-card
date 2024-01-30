@@ -7,8 +7,8 @@ inputs:
     description: Your GitHub token for authentication.
     required: true
 
-  jue_jin_id:
-    description: 'your jue_jin_id'
+  juejin_id:
+    description: 'your juejin_id'
     required: true
   csdn_name:
     description: 'your csdn username'

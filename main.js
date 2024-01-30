@@ -8,7 +8,7 @@ const Action = require('./action')
     // 获取输入
     log.info(`开始获取输入`)
     const token = core.getInput('github_token')
-    const JueJinId = core.getInput('jue_jin_id')
+    const JueJinId = core.getInput('juejin_id')
     const csdnName = core.getInput('csdn_name')
     log.info(`JueJinId: ${JueJinId}`)
     log.info(`csdnName: ${csdnName}`)
