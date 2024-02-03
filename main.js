@@ -11,12 +11,14 @@ const Action = require('./action')
     const JueJinId = core.getInput('juejin_id')
     const csdnName = core.getInput('csdn_name')
     const lang = core.getInput('lang')
+    const commitUser = core.getInput('commit_user')
     log.info(`JueJinId: ${JueJinId}`)
     log.info(`csdnName: ${csdnName}`)
     log.info(`lang: ${lang}`)
-    const commit_message = core.getInput('commit_message')
+    log.info(`commitUser: ${commitUser}`)
+    const commitMessage = core.getInput('commit_message')
     const branch = core.getInput('branch')
-    log.info(`commit_message: ${commit_message}`)
+    log.info(`commit_message: ${commitMessage}`)
     log.info(`branch: ${branch}`)
     console.log('github1', github)
     log.info(`github: ${JSON.stringify(github)}`)
@@ -31,7 +33,8 @@ const Action = require('./action')
       JueJinId,
       csdnName,
       lang,
-      commit_message,
+      commitUser,
+      commitMessage,
       branch,
       owner,
       repo

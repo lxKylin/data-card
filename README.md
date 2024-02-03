@@ -10,14 +10,17 @@
 
 ### yml配置
 
-| 参数           | 说明               | 类型   | 可选值   | 默认值                    |
-| -------------- | ------------------ | ------ | -------- | ------------------------- |
-| github_token   | GitHub token`必须` | string | --       | --                        |  |
-| juejin_id      | 掘金ID             | string | --       | --                        |  |
-| csdn_name      | CSDN用户名         | string | --       | --                        |
-| commit_message | commit信息         | string | --       | feat: Add Card Image [ci] |  |
-| branch         | 推送分支           | string | --       | main                      |  |
-| lang           | 语言               | string | en/zh-CN | en                        |  |
+> `commit_user`为`actions`则为`actions`机器人进行提交，为`users`则是用户自身进行提交，日历热力图中才会显示今日提交
+
+| 参数           | 说明               | 类型   | 可选值        | 默认值                    |
+| -------------- | ------------------ | ------ | ------------- | ------------------------- |
+| github_token   | GitHub token`必须` | string | --            | --                        |  |
+| juejin_id      | 掘金ID             | string | --            | --                        |  |
+| csdn_name      | CSDN用户名         | string | --            | --                        |
+| commit_user    | commit提交人员     | string | actions/users | actions                   |  |
+| commit_message | commit信息         | string | --            | feat: Add Card Image [ci] |  |
+| branch         | 推送分支           | string | --            | main                      |  |
+| lang           | 语言               | string | en/zh-CN      | en                        |  |
 
 ### yml Demo
 ```yml
@@ -50,6 +53,7 @@ jobs:
 ![Alt text](/images/juejin.png)
 
 - 掘金卡片如下：
+  
 ![掘金数据卡片](./image/juejin-card.svg)
 
 ![掘金数据卡片](./image/juejin-card_zh-CN.svg)

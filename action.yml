@@ -9,7 +9,7 @@ inputs:
   lang:
     description: 'your lang'
     required: false
-    default: 'en'
+    default: en
   juejin_id:
     description: 'your juejin_id'
     required: true
@@ -23,6 +23,9 @@ inputs:
     description: Commit message of the github action.
     required: false
     default: 'feat: Add Card Image [ci]'
+  commit_user:
+    description: Commit message of user.
+    default: actions
   branch:
     description: 'your target branch'
     required: false

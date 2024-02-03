@@ -23,7 +23,8 @@ const Action = async (payload) => {
     JueJinId,
     csdnName,
     lang,
-    commit_message,
+    commitUser,
+    commitMessage,
     branch,
     owner,
     repo
@@ -115,10 +116,13 @@ const Action = async (payload) => {
     console.log('4. 创建提交')
     const createCommit = async (treeSHA) => {
       const commitResponse = await instance.post('/git/commits', {
-        message: commit_message,
+        message: commitMessage,
         author: {
           name: owner,
-          email: 'actions@github.com' // "actions@github.com"
+          email:
+            commitUser == 'actions'
+              ? 'actions@github.com'
+              : `${owner}@users.noreply.github.com` // "actions@github.com"
           // email: `${owner}@users.noreply.github.com` // "actions@github.com"
         },
         parents: [lastCommitSHA],
