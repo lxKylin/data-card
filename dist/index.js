@@ -29,7 +29,8 @@ const Action = async (payload) => {
     JueJinId,
     csdnName,
     lang,
-    commit_message,
+    commitUser,
+    commitMessage,
     branch,
     owner,
     repo
@@ -121,10 +122,13 @@ const Action = async (payload) => {
     console.log('4. 创建提交')
     const createCommit = async (treeSHA) => {
       const commitResponse = await instance.post('/git/commits', {
-        message: commit_message,
+        message: commitMessage,
         author: {
           name: owner,
-          email: 'actions@github.com' // "actions@github.com"
+          email:
+            commitUser == 'actions'
+              ? 'actions@github.com'
+              : `${owner}@users.noreply.github.com` // "actions@github.com"
           // email: `${owner}@users.noreply.github.com` // "actions@github.com"
         },
         parents: [lastCommitSHA],
@@ -59104,12 +59108,14 @@ const Action = __nccwpck_require__(4582)
     const JueJinId = core.getInput('juejin_id')
     const csdnName = core.getInput('csdn_name')
     const lang = core.getInput('lang')
+    const commitUser = core.getInput('commit_user')
     log.info(`JueJinId: ${JueJinId}`)
     log.info(`csdnName: ${csdnName}`)
     log.info(`lang: ${lang}`)
-    const commit_message = core.getInput('commit_message')
+    log.info(`commitUser: ${commitUser}`)
+    const commitMessage = core.getInput('commit_message')
     const branch = core.getInput('branch')
-    log.info(`commit_message: ${commit_message}`)
+    log.info(`commit_message: ${commitMessage}`)
     log.info(`branch: ${branch}`)
     console.log('github1', github)
     log.info(`github: ${JSON.stringify(github)}`)
@@ -59124,7 +59130,8 @@ const Action = __nccwpck_require__(4582)
       JueJinId,
       csdnName,
       lang,
-      commit_message,
+      commitUser,
+      commitMessage,
       branch,
       owner,
       repo
