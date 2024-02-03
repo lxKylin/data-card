@@ -10,22 +10,30 @@ const log = __nccwpck_require__(7454)
 const getJueJinInfo = __nccwpck_require__(6068)
 const renderJueJinCard = __nccwpck_require__(3060)
 
-async function renderJueJin(id) {
+async function renderJueJin(id, lang) {
   const data = await getJueJinInfo(id)
-  return renderJueJinCard(data)
+  return renderJueJinCard(data, lang)
 }
 
 const getCSDNInfo = __nccwpck_require__(5579)
 const renderCSDNCard = __nccwpck_require__(9427)
 
-async function renderCSDN(name) {
+async function renderCSDN(name, lang) {
   const data = await getCSDNInfo(name)
-  return renderCSDNCard(data)
+  return renderCSDNCard(data, lang)
 }
 
 const Action = async (payload) => {
-  const { token, JueJinId, csdnName, commit_message, branch, owner, repo } =
-    payload
+  const {
+    token,
+    JueJinId,
+    csdnName,
+    lang,
+    commit_message,
+    branch,
+    owner,
+    repo
+  } = payload
 
   log.info(`payload: ${JSON.stringify(payload)}`)
 
@@ -61,7 +69,7 @@ const Action = async (payload) => {
     if (JueJinId) {
       // 2. 创建 Blobs（base64 编码）
       console.log('2. 创建 Blobs（base64 编码）- juejin')
-      const jueJinSvg = await renderJueJin(JueJinId)
+      const jueJinSvg = await renderJueJin(JueJinId, lang)
       console.log(jueJinSvg, 'jueJinSvg,同步读取文件内容')
 
       jueJinSvgSHA = await createBlob(jueJinSvg.toString('base64'), 'utf-8')
@@ -73,7 +81,7 @@ const Action = async (payload) => {
     if (csdnName) {
       // 2. 创建 Blobs（base64 编码）
       console.log('2. 创建 Blobs（base64 编码）- csdn')
-      const csndSvg = await renderCSDN(csdnName)
+      const csndSvg = await renderCSDN(csdnName, lang)
       console.log(csndSvg, 'csndSvg,同步读取文件内容')
 
       csndSvgSvgSHA = await createBlob(csndSvgSvg.toString('base64'), 'utf-8')
@@ -44103,7 +44111,7 @@ const {
   formatNumber
 } = __nccwpck_require__(638)
 
-function renderCSDNCard(data, lang = 'zh-CN') {
+function renderCSDNCard(data, lang = 'en') {
   console.log(data, 'csdn1')
   data = formatData(data)
   console.log(data, 'csdn2')
@@ -44128,50 +44136,42 @@ function renderCSDNCard(data, lang = 'zh-CN') {
       items = [
         constructItem(97, 44, `${username}的 CSDN 数据`, 'title', 18),
         constructItem(63, 83, `原创`, 'label', 13.5),
-        constructItem(63, 120, `粉丝`, 'label', 13.5),
-        constructItem(220, 120, `总访问量`, 'label', 13.5),
+        constructItem(63, 115, `粉丝`, 'label', 13.5),
+        constructItem(220, 115, `总访问量`, 'label', 13.5),
         constructItem(220, 83, `排名`, 'label', 13.5),
-        constructItem(63, 163, `成就`, 'label', 13.5),
-        constructItem(124, 153, `被点赞`, 'label', 13.5),
-        constructItem(230, 153, `被评论`, 'label', 13.5),
-        constructItem(124, 173, `被收藏`, 'label', 13.5),
-        constructItem(230, 173, `被分享`, 'label', 13.5),
+        constructItem(63, 145, `被点赞`, 'label', 13.5),
+        constructItem(220, 145, `被评论`, 'label', 13.5),
+        constructItem(63, 173, `被收藏`, 'label', 13.5),
+        constructItem(220, 173, `被分享`, 'label', 13.5),
         constructItem(134, 83, `${formatNumber(article_count)}`, 'value', 15),
-        constructItem(134, 120, `${formatNumber(follow_count)}`, 'value', 15),
-        constructItem(295, 120, `${formatNumber(views)}`, 'value', 15),
+        constructItem(134, 115, `${formatNumber(follow_count)}`, 'value', 15),
+        constructItem(295, 115, `${formatNumber(views)}`, 'value', 15),
         constructItem(295, 83, `${formatNumber(ranking)}`, 'value', 15),
-        constructItem(185, 153, `${formatNumber(likes)}`, 'value', 15),
-        constructItem(295, 153, `${formatNumber(discuss)}`, 'value', 15),
-        constructItem(185, 173, `${formatNumber(collect)}`, 'value', 15),
+        constructItem(134, 145, `${formatNumber(likes)}`, 'value', 15),
+        constructItem(295, 145, `${formatNumber(discuss)}`, 'value', 15),
+        constructItem(134, 173, `${formatNumber(collect)}`, 'value', 15),
         constructItem(295, 173, `${formatNumber(share)}`, 'value', 15)
       ]
       break
-    default:
+    case 'en':
       items = [
         constructItem(97, 44, `${username}'s CSDN Stats`, 'title', 18),
-        constructItem(63, 83, `Articles`, 'label', 13.5),
-        constructItem(63, 120, `Fans`, 'label', 13.5),
-        constructItem(63, 157, `Likes`, 'label', 13.5),
-        constructItem(220, 83, `Replies`, 'label', 13.5),
-        constructItem(220, 120, `Views`, 'label', 13.5),
-        constructItem(220, 157, `Credit`, 'label', 13.5),
-        constructItem(63, 83, `Articles`, 'label', 13.5),
-        constructItem(63, 120, `Fans`, 'label', 13.5),
-        constructItem(220, 120, `Views`, 'label', 13.5),
-        constructItem(220, 83, `Ranking`, 'label', 13.5),
-        constructItem(63, 163, `Achievement`, 'label', 13.5),
-        constructItem(124, 153, `Likes`, 'label', 13.5),
-        constructItem(230, 153, `Discuss`, 'label', 13.5),
-        constructItem(124, 173, `Collect`, 'label', 13.5),
-        constructItem(230, 173, `Share`, 'label', 13.5),
-        constructItem(134, 83, `${formatNumber(article_count)}`, 'value', 15),
-        constructItem(134, 120, `${formatNumber(follow_count)}`, 'value', 15),
-        constructItem(295, 120, `${formatNumber(views)}`, 'value', 15),
-        constructItem(295, 83, `${formatNumber(ranking)}`, 'value', 15),
-        constructItem(185, 153, `${formatNumber(likes)}`, 'value', 15),
-        constructItem(295, 153, `${formatNumber(discuss)}`, 'value', 15),
-        constructItem(185, 173, `${formatNumber(collect)}`, 'value', 15),
-        constructItem(295, 173, `${formatNumber(share)}`, 'value', 15)
+        constructItem(53, 83, `Articles`, 'label', 13.5),
+        constructItem(53, 115, `Fans`, 'label', 13.5),
+        constructItem(200, 115, `Views`, 'label', 13.5),
+        constructItem(200, 83, `Ranking`, 'label', 13.5),
+        constructItem(53, 145, `Be Liked`, 'label', 13.5),
+        constructItem(200, 145, `Be Commented`, 'label', 13.5),
+        constructItem(53, 173, `Be Collected`, 'label', 13.5),
+        constructItem(200, 173, `Be Shared`, 'label', 13.5),
+        constructItem(150, 83, `${formatNumber(article_count)}`, 'value', 15),
+        constructItem(150, 115, `${formatNumber(follow_count)}`, 'value', 15),
+        constructItem(310, 115, `${formatNumber(views)}`, 'value', 15),
+        constructItem(310, 83, `${formatNumber(ranking)}`, 'value', 15),
+        constructItem(150, 145, `${formatNumber(likes)}`, 'value', 15),
+        constructItem(310, 145, `${formatNumber(discuss)}`, 'value', 15),
+        constructItem(150, 173, `${formatNumber(collect)}`, 'value', 15),
+        constructItem(310, 173, `${formatNumber(share)}`, 'value', 15)
       ]
       break
   }
@@ -44189,7 +44189,7 @@ module.exports = renderCSDNCard
 const { render, constructItem } = __nccwpck_require__(2363)
 const { isEndsWithASCII, encodeHTML, formatData } = __nccwpck_require__(638)
 
-function renderJueJinCard(data, lang = 'zh-CN') {
+function renderJueJinCard(data, lang = 'en') {
   console.log(data, 'data1')
   data = formatData(data)
   console.log(data, 'data2')
@@ -44225,21 +44225,21 @@ function renderJueJinCard(data, lang = 'zh-CN') {
         constructItem(289, 154, `${got_view_count}`, 'value', 15)
       ]
       break
-    default:
+    case 'en':
       items = [
         constructItem(94, 44, `${user_name}&apos;s Juejin Stats`, 'title', 18),
-        constructItem(55, 84, `Followers`, 'label', 13.5),
-        constructItem(193, 84, `Articles`, 'label', 13.5),
-        constructItem(55, 119, `Creation Level`, 'label', 13.5),
-        constructItem(193, 119, `Likes`, 'label', 13.5),
-        constructItem(55, 154, `JueJin Level`, 'label', 13.5),
-        constructItem(193, 154, `Article Views`, 'label', 13.5),
-        constructItem(126, 84, `${follower_count}`, 'value', 15),
-        constructItem(289, 84, `${article_count}`, 'value', 15),
-        constructItem(126, 119, `Lv.${level}`, 'value', 15),
-        constructItem(289, 119, `${got_digg_count}`, 'value', 15),
-        constructItem(126, 154, `Lv.${jscore_level}`, 'value', 15),
-        constructItem(289, 154, `${got_view_count}`, 'value', 15)
+        constructItem(45, 84, `Followers`, 'label', 13.5),
+        constructItem(203, 84, `Articles`, 'label', 13.5),
+        constructItem(45, 119, `Creation Level`, 'label', 13.5),
+        constructItem(203, 119, `Likes`, 'label', 13.5),
+        constructItem(45, 154, `JueJin Level`, 'label', 13.5),
+        constructItem(203, 154, `Article Views`, 'label', 13.5),
+        constructItem(146, 84, `${follower_count}`, 'value', 15),
+        constructItem(299, 84, `${article_count}`, 'value', 15),
+        constructItem(146, 119, `Lv.${level}`, 'value', 15),
+        constructItem(299, 119, `${got_digg_count}`, 'value', 15),
+        constructItem(146, 154, `Lv.${jscore_level}`, 'value', 15),
+        constructItem(299, 154, `${got_view_count}`, 'value', 15)
       ]
       break
   }
@@ -59103,8 +59103,10 @@ const Action = __nccwpck_require__(4582)
     const token = core.getInput('github_token')
     const JueJinId = core.getInput('juejin_id')
     const csdnName = core.getInput('csdn_name')
+    const lang = core.getInput('lang')
     log.info(`JueJinId: ${JueJinId}`)
     log.info(`csdnName: ${csdnName}`)
+    log.info(`lang: ${lang}`)
     const commit_message = core.getInput('commit_message')
     const branch = core.getInput('branch')
     log.info(`commit_message: ${commit_message}`)
@@ -59121,6 +59123,7 @@ const Action = __nccwpck_require__(4582)
       token,
       JueJinId,
       csdnName,
+      lang,
       commit_message,
       branch,
       owner,
