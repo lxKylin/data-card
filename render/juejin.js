@@ -1,7 +1,7 @@
 const { render, constructItem } = require('./common')
 const { isEndsWithASCII, encodeHTML, formatData } = require('../utils/utils')
 
-function renderJueJinCard(data, lang = 'zh-CN') {
+function renderJueJinCard(data, lang = 'en') {
   console.log(data, 'data1')
   data = formatData(data)
   console.log(data, 'data2')
@@ -37,21 +37,21 @@ function renderJueJinCard(data, lang = 'zh-CN') {
         constructItem(289, 154, `${got_view_count}`, 'value', 15)
       ]
       break
-    default:
+    case 'en':
       items = [
         constructItem(94, 44, `${user_name}&apos;s Juejin Stats`, 'title', 18),
-        constructItem(55, 84, `Followers`, 'label', 13.5),
-        constructItem(193, 84, `Articles`, 'label', 13.5),
-        constructItem(55, 119, `Creation Level`, 'label', 13.5),
-        constructItem(193, 119, `Likes`, 'label', 13.5),
-        constructItem(55, 154, `JueJin Level`, 'label', 13.5),
-        constructItem(193, 154, `Article Views`, 'label', 13.5),
-        constructItem(126, 84, `${follower_count}`, 'value', 15),
-        constructItem(289, 84, `${article_count}`, 'value', 15),
-        constructItem(126, 119, `Lv.${level}`, 'value', 15),
-        constructItem(289, 119, `${got_digg_count}`, 'value', 15),
-        constructItem(126, 154, `Lv.${jscore_level}`, 'value', 15),
-        constructItem(289, 154, `${got_view_count}`, 'value', 15)
+        constructItem(45, 84, `Followers`, 'label', 13.5),
+        constructItem(203, 84, `Articles`, 'label', 13.5),
+        constructItem(45, 119, `Creation Level`, 'label', 13.5),
+        constructItem(203, 119, `Likes`, 'label', 13.5),
+        constructItem(45, 154, `JueJin Level`, 'label', 13.5),
+        constructItem(203, 154, `Article Views`, 'label', 13.5),
+        constructItem(146, 84, `${follower_count}`, 'value', 15),
+        constructItem(299, 84, `${article_count}`, 'value', 15),
+        constructItem(146, 119, `Lv.${level}`, 'value', 15),
+        constructItem(299, 119, `${got_digg_count}`, 'value', 15),
+        constructItem(146, 154, `Lv.${jscore_level}`, 'value', 15),
+        constructItem(299, 154, `${got_view_count}`, 'value', 15)
       ]
       break
   }

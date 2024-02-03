@@ -6,7 +6,10 @@ inputs:
   github_token:
     description: Your GitHub token for authentication.
     required: true
-
+  lang:
+    description: 'your lang'
+    required: false
+    default: 'en'
   juejin_id:
     description: 'your juejin_id'
     required: true

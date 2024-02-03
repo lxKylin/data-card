@@ -6,7 +6,7 @@ const {
   formatNumber
 } = require('../utils/utils')
 
-function renderCSDNCard(data, lang = 'zh-CN') {
+function renderCSDNCard(data, lang = 'en') {
   console.log(data, 'csdn1')
   data = formatData(data)
   console.log(data, 'csdn2')
@@ -31,50 +31,42 @@ function renderCSDNCard(data, lang = 'zh-CN') {
       items = [
         constructItem(97, 44, `${username}的 CSDN 数据`, 'title', 18),
         constructItem(63, 83, `原创`, 'label', 13.5),
-        constructItem(63, 120, `粉丝`, 'label', 13.5),
-        constructItem(220, 120, `总访问量`, 'label', 13.5),
+        constructItem(63, 115, `粉丝`, 'label', 13.5),
+        constructItem(220, 115, `总访问量`, 'label', 13.5),
         constructItem(220, 83, `排名`, 'label', 13.5),
-        constructItem(63, 163, `成就`, 'label', 13.5),
-        constructItem(124, 153, `被点赞`, 'label', 13.5),
-        constructItem(230, 153, `被评论`, 'label', 13.5),
-        constructItem(124, 173, `被收藏`, 'label', 13.5),
-        constructItem(230, 173, `被分享`, 'label', 13.5),
+        constructItem(63, 145, `被点赞`, 'label', 13.5),
+        constructItem(220, 145, `被评论`, 'label', 13.5),
+        constructItem(63, 173, `被收藏`, 'label', 13.5),
+        constructItem(220, 173, `被分享`, 'label', 13.5),
         constructItem(134, 83, `${formatNumber(article_count)}`, 'value', 15),
-        constructItem(134, 120, `${formatNumber(follow_count)}`, 'value', 15),
-        constructItem(295, 120, `${formatNumber(views)}`, 'value', 15),
+        constructItem(134, 115, `${formatNumber(follow_count)}`, 'value', 15),
+        constructItem(295, 115, `${formatNumber(views)}`, 'value', 15),
         constructItem(295, 83, `${formatNumber(ranking)}`, 'value', 15),
-        constructItem(185, 153, `${formatNumber(likes)}`, 'value', 15),
-        constructItem(295, 153, `${formatNumber(discuss)}`, 'value', 15),
-        constructItem(185, 173, `${formatNumber(collect)}`, 'value', 15),
+        constructItem(134, 145, `${formatNumber(likes)}`, 'value', 15),
+        constructItem(295, 145, `${formatNumber(discuss)}`, 'value', 15),
+        constructItem(134, 173, `${formatNumber(collect)}`, 'value', 15),
         constructItem(295, 173, `${formatNumber(share)}`, 'value', 15)
       ]
       break
-    default:
+    case 'en':
       items = [
         constructItem(97, 44, `${username}'s CSDN Stats`, 'title', 18),
-        constructItem(63, 83, `Articles`, 'label', 13.5),
-        constructItem(63, 120, `Fans`, 'label', 13.5),
-        constructItem(63, 157, `Likes`, 'label', 13.5),
-        constructItem(220, 83, `Replies`, 'label', 13.5),
-        constructItem(220, 120, `Views`, 'label', 13.5),
-        constructItem(220, 157, `Credit`, 'label', 13.5),
-        constructItem(63, 83, `Articles`, 'label', 13.5),
-        constructItem(63, 120, `Fans`, 'label', 13.5),
-        constructItem(220, 120, `Views`, 'label', 13.5),
-        constructItem(220, 83, `Ranking`, 'label', 13.5),
-        constructItem(63, 163, `Achievement`, 'label', 13.5),
-        constructItem(124, 153, `Likes`, 'label', 13.5),
-        constructItem(230, 153, `Discuss`, 'label', 13.5),
-        constructItem(124, 173, `Collect`, 'label', 13.5),
-        constructItem(230, 173, `Share`, 'label', 13.5),
-        constructItem(134, 83, `${formatNumber(article_count)}`, 'value', 15),
-        constructItem(134, 120, `${formatNumber(follow_count)}`, 'value', 15),
-        constructItem(295, 120, `${formatNumber(views)}`, 'value', 15),
-        constructItem(295, 83, `${formatNumber(ranking)}`, 'value', 15),
-        constructItem(185, 153, `${formatNumber(likes)}`, 'value', 15),
-        constructItem(295, 153, `${formatNumber(discuss)}`, 'value', 15),
-        constructItem(185, 173, `${formatNumber(collect)}`, 'value', 15),
-        constructItem(295, 173, `${formatNumber(share)}`, 'value', 15)
+        constructItem(53, 83, `Articles`, 'label', 13.5),
+        constructItem(53, 115, `Fans`, 'label', 13.5),
+        constructItem(200, 115, `Views`, 'label', 13.5),
+        constructItem(200, 83, `Ranking`, 'label', 13.5),
+        constructItem(53, 145, `Be Liked`, 'label', 13.5),
+        constructItem(200, 145, `Be Commented`, 'label', 13.5),
+        constructItem(53, 173, `Be Collected`, 'label', 13.5),
+        constructItem(200, 173, `Be Shared`, 'label', 13.5),
+        constructItem(150, 83, `${formatNumber(article_count)}`, 'value', 15),
+        constructItem(150, 115, `${formatNumber(follow_count)}`, 'value', 15),
+        constructItem(310, 115, `${formatNumber(views)}`, 'value', 15),
+        constructItem(310, 83, `${formatNumber(ranking)}`, 'value', 15),
+        constructItem(150, 145, `${formatNumber(likes)}`, 'value', 15),
+        constructItem(310, 145, `${formatNumber(discuss)}`, 'value', 15),
+        constructItem(150, 173, `${formatNumber(collect)}`, 'value', 15),
+        constructItem(310, 173, `${formatNumber(share)}`, 'value', 15)
       ]
       break
   }

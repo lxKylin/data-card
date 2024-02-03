@@ -4,22 +4,30 @@ const log = require('./utils/log')
 const getJueJinInfo = require('./api/juejin')
 const renderJueJinCard = require('./render/juejin')
 
-async function renderJueJin(id) {
+async function renderJueJin(id, lang) {
   const data = await getJueJinInfo(id)
-  return renderJueJinCard(data)
+  return renderJueJinCard(data, lang)
 }
 
 const getCSDNInfo = require('./api/csdn')
 const renderCSDNCard = require('./render/csdn')
 
-async function renderCSDN(name) {
+async function renderCSDN(name, lang) {
   const data = await getCSDNInfo(name)
-  return renderCSDNCard(data)
+  return renderCSDNCard(data, lang)
 }
 
 const Action = async (payload) => {
-  const { token, JueJinId, csdnName, commit_message, branch, owner, repo } =
-    payload
+  const {
+    token,
+    JueJinId,
+    csdnName,
+    lang,
+    commit_message,
+    branch,
+    owner,
+    repo
+  } = payload
 
   log.info(`payload: ${JSON.stringify(payload)}`)
 
@@ -55,7 +63,7 @@ const Action = async (payload) => {
     if (JueJinId) {
       // 2. 创建 Blobs（base64 编码）
       console.log('2. 创建 Blobs（base64 编码）- juejin')
-      const jueJinSvg = await renderJueJin(JueJinId)
+      const jueJinSvg = await renderJueJin(JueJinId, lang)
       console.log(jueJinSvg, 'jueJinSvg,同步读取文件内容')
 
       jueJinSvgSHA = await createBlob(jueJinSvg.toString('base64'), 'utf-8')
@@ -67,7 +75,7 @@ const Action = async (payload) => {
     if (csdnName) {
       // 2. 创建 Blobs（base64 编码）
       console.log('2. 创建 Blobs（base64 编码）- csdn')
-      const csndSvg = await renderCSDN(csdnName)
+      const csndSvg = await renderCSDN(csdnName, lang)
       console.log(csndSvg, 'csndSvg,同步读取文件内容')
 
       csndSvgSvgSHA = await createBlob(csndSvgSvg.toString('base64'), 'utf-8')

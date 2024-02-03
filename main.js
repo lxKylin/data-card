@@ -10,8 +10,10 @@ const Action = require('./action')
     const token = core.getInput('github_token')
     const JueJinId = core.getInput('juejin_id')
     const csdnName = core.getInput('csdn_name')
+    const lang = core.getInput('lang')
     log.info(`JueJinId: ${JueJinId}`)
     log.info(`csdnName: ${csdnName}`)
+    log.info(`lang: ${lang}`)
     const commit_message = core.getInput('commit_message')
     const branch = core.getInput('branch')
     log.info(`commit_message: ${commit_message}`)
@@ -28,6 +30,7 @@ const Action = require('./action')
       token,
       JueJinId,
       csdnName,
+      lang,
       commit_message,
       branch,
       owner,

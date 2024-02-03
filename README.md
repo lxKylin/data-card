@@ -10,13 +10,14 @@
 
 ### yml配置
 
-| 参数           | 说明               | 类型   | 可选值 | 默认值                    |
-| -------------- | ------------------ | ------ | ------ | ------------------------- |
-| github_token   | GitHub token`必须` | string | --     | --                        |  |
-| juejin_id      | 掘金ID             | string | --     | --                        |  |
-| csdn_name      | CSDN用户名         | string | --     | --                        |
-| commit_message | commit信息         | string | --     | feat: Add Card Image [ci] |  |
-| branch         | 推送分支           | string | --     | main                      |  |
+| 参数           | 说明               | 类型   | 可选值   | 默认值                    |
+| -------------- | ------------------ | ------ | -------- | ------------------------- |
+| github_token   | GitHub token`必须` | string | --       | --                        |  |
+| juejin_id      | 掘金ID             | string | --       | --                        |  |
+| csdn_name      | CSDN用户名         | string | --       | --                        |
+| commit_message | commit信息         | string | --       | feat: Add Card Image [ci] |  |
+| branch         | 推送分支           | string | --       | main                      |  |
+| lang           | 语言               | string | en/zh-CN | en                        |  |
 
 ### yml Demo
 ```yml
@@ -35,9 +36,10 @@ jobs:
         uses: lxKylin/data-card@action
         with:
           github_token: ${{ secrets.DATA_CARD_TOKEN }} # Github token
-          juejin_id: ${{ secrets.JUEJIN_PARAMS }} # 掘金用户id
+          juejin_id: ${{ secrets.JUEJIN_PARAMS }} # 掘金用户id，也可直接写死
           commit_message: 'JueJin Card', # 提交信息，默认：feat: Add Card Image [ci]
           branch: main # 提交分支，默认：main
+          lang: en # 语言，默认：en，可选zh-CN
 
 ```
 
@@ -48,8 +50,9 @@ jobs:
 ![Alt text](/images/juejin.png)
 
 - 掘金卡片如下：
-
 ![掘金数据卡片](./image/juejin-card.svg)
+
+![掘金数据卡片](./image/juejin-card_zh-CN.svg)
 
 ## CSDN
 
@@ -60,3 +63,5 @@ jobs:
 - CSDN卡片如下：
 
 ![CSDN数据卡片](./image/csdn-card.svg)
+
+![CSDN数据卡片](./image/csdn-card_zh-CN.svg)
